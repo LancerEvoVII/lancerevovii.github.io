@@ -3,185 +3,176 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>1880: China – Bahn-Begleiter</title>
+    <title>1880: China – Kaiserlicher Bahn-Begleiter</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Noto+Serif+SC:wght@300;600&display=swap" rel="stylesheet">
+    
     <style>
-        /* --- DESIGN-BASIS & ANIMATIONEN --- */
-        * { box-sizing: border-box; transition: background-color 0.8s ease, color 0.4s ease, border-color 0.4s ease; }
+        /* --- EDLES THEMING & LAYOUT FÜR 1880: CHINA --- */
+        * { 
+            box-sizing: border-box; 
+            transition: background-color 0.6s cubic-bezier(0.4, 0, 0.2, 1), 
+                        color 0.4s ease, 
+                        border-color 0.4s ease, 
+                        transform 0.2s ease,
+                        box-shadow 0.4s ease; 
+        }
+
         body {
             margin: 0;
-            padding: 20px;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            padding: 40px 20px;
+            font-family: 'Noto Serif SC', Georgia, serif;
             min-height: 100vh;
             display: flex;
             flex-direction: column;
             align-items: center;
         }
 
-        /* --- THEMES (FARBEN & SCHRIFTEN) --- */
-        /* Phase 2: Qing-Dynastie (Warmes Pergament) */
-        body[data-theme="2"] { background-color: #f3ebd3; color: #3a2e1b; }
-        body[data-theme="2"] .card { background: #faf5e6; border: 1px solid #b5a282; }
-        body[data-theme="2"] .active-slider { background: #8b7355; left: 4px; }
-        body[data-theme="2"] button.phase-btn[data-active="true"] { color: #ffffff; }
-        body[data-theme="2"] .badge, body[data-theme="2"] .results-box { background: #e9dec0; }
-
-        /* Phase 4 & 6: Industrialisierung (Klares Grau/Grün) */
-        body[data-theme="4"], body[data-theme="6"] { background-color: #e2e8f0; color: #1e293b; }
-        body[data-theme="4"] .card, body[data-theme="6"] .card { background: #ffffff; border: 1px solid #cbd5e1; }
-        body[data-theme="4"] .active-slider { background: #059669; left: calc(25% + 2px); }
-        body[data-theme="6"] .active-slider { background: #059669; left: calc(50% + 1px); }
-        body[data-theme="4"] button.phase-btn[data-active="true"], body[data-theme="6"] button.phase-btn[data-active="true"] { color: #ffffff; }
-        body[data-theme="4"] .badge, body[data-theme="4"] .results-box, body[data-theme="6"] .badge, body[data-theme="6"] .results-box { background: #f1f5f9; }
-
-        /* Phase E: Moderne (Edler Dark Mode) */
-        body[data-theme="E"] { background-color: #0f172a; color: #f8fafc; }
-        body[data-theme="E"] .card { background: #1e293b; border: 1px solid #334155; }
-        body[data-theme="E"] .active-slider { background: #3b82f6; left: calc(75% - 4px); }
-        body[data-theme="E"] button.phase-btn[data-active="true"] { color: #ffffff; }
-        body[data-theme="E"] .badge, body[data-theme="E"] .results-box { background: #334155; }
-
-        /* --- LAYOUT & STRUKTUR --- */
-        .wrapper { width: 100%; max-width: 1000px; flex-grow: 1; }
-        header { text-align: center; margin-bottom: 40px; border-bottom: 1px solid rgba(0,0,0,0.1); padding-bottom: 20px; }
-        body[data-theme="E"] header { border-bottom: 1px solid rgba(255,255,255,0.1); }
-        h1 { margin: 0 0 5px 0; font-size: 2.5rem; font-weight: 800; letter-spacing: -0.05em; }
-        .subtitle { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.15em; font-weight: 700; opacity: 0.6; }
-
-        /* Animierte Phasen-Navi */
-        .nav-container {
-            display: inline-flex;
-            position: relative;
-            background: rgba(0,0,0,0.05);
-            padding: 4px;
-            border-radius: 9999px;
-            margin-top: 25px;
-            border: 1px solid rgba(0,0,0,0.08);
-        }
-        body[data-theme="E"] .nav-container { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.08); }
-        .phase-btn {
-            position: relative;
-            background: transparent;
-            border: none;
-            padding: 10px 24px;
-            font-size: 0.85rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            cursor: pointer;
-            z-index: 10;
-            color: inherit;
-            opacity: 0.5;
-            width: 110px;
-        }
-        .phase-btn[data-active="true"] { opacity: 1; }
-        .active-slider {
+        /* Kaiserliche Ornament-Leiste am oberen Bildschirmrand */
+        .top-ornament {
             position: absolute;
-            top: 4px;
-            bottom: 4px;
-            width: 110px;
-            border-radius: 9999px;
-            transition: left 0.4s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.4s ease;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 8px;
+            background: repeating-linear-gradient(45deg, #8b7355, #8b7355 10px, #bd9b73 10px, #bd9b73 20px);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            z-index: 1;
         }
 
-        /* Dashboard Spalten */
-        .grid { display: grid; grid-template-columns: 1fr; gap: 30px; }
-        @media (min-width: 768px) { .grid { grid-template-columns: 1fr 1fr; } }
+        /* --- EPOCHEN-STILE (THEMES) --- */
+        /* Ära 1: Kaiserliches China (Warmes, historisches Manuskript-Design) */
+        body[data-theme="2"] { background-color: #f5eedc; color: #2e2516; }
+        body[data-theme="2"] .card { background: #fdfbf7; border: 2px solid #8b7355; border-radius: 4px; box-shadow: 0 8px 20px rgba(139,115,85,0.15); }
+        body[data-theme="2"] .card h2 { font-family: 'Cinzel', serif; color: #722f1d; border-bottom: 2px solid #8b7355; }
+        body[data-theme="2"] button.phase-btn[data-active="true"] { background: #722f1d; color: #f5eedc; box-shadow: 0 4px 10px rgba(114,47,29,0.3); }
+        body[data-theme="2"] .badge, body[data-theme="2"] .results-box { background: #eaddbd; border-left: 4px solid #722f1d; color: #4e1d11; }
+        body[data-theme="2"] select, body[data-theme="2"] input { border: 1px solid #8b7355; background: #fffcf7; font-family: inherit; color: #2e2516; }
 
-        .card { padding: 25px; border-radius: 16px; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.05); }
-        .card h2 { margin-top: 0; font-size: 1.3rem; font-weight: 700; margin-bottom: 20px; display: flex; align-items: center; gap: 10px; }
+        /* Ära 2: Industrialisierung & Republik (Kühleres, strukturiertes Grau-Grün) */
+        body[data-theme="4"], body[data-theme="6"] { background-color: #e6ecf2; color: #1e293b; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
+        body[data-theme="4"] .card, body[data-theme="6"] .card { background: #ffffff; border: 1px solid #94a3b8; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.05); }
+        body[data-theme="4"] .card h2, body[data-theme="6"] .card h2 { font-family: sans-serif; color: #0f172a; border-bottom: 1px solid #cbd5e1; font-weight: 700; }
+        body[data-theme="4"] button.phase-btn[data-active="true"] { background: #059669; color: #ffffff; border-radius: 8px; box-shadow: 0 4px 10px rgba(5,150,105,0.25); }
+        body[data-theme="6"] button.phase-btn[data-active="true"] { background: #0284c7; color: #ffffff; border-radius: 8px; box-shadow: 0 4px 10px rgba(2,132,199,0.25); }
+        body[data-theme="4"] .badge, body[data-theme="4"] .results-box, body[data-theme="6"] .badge, body[data-theme="6"] .results-box { background: #f1f5f9; border-left: 4px solid #64748b; color: #1e293b; }
+        body[data-theme="4"] select, body[data-theme="4"] input, body[data-theme="6"] select, body[data-theme="6"] input { border: 1px solid #cbd5e1; border-radius: 6px; background: #ffffff; color: #1e293b; }
 
-        /* Formular-Elemente */
-        .form-group { margin-bottom: 20px; }
-        .form-group label { display: block; font-size: 0.75rem; text-transform: uppercase; font-weight: 700; margin-bottom: 8px; opacity: 0.7; }
-        select, input {
-            width: 100%;
-            padding: 12px;
-            border-radius: 10px;
-            border: 1px solid rgba(0,0,0,0.15);
-            background: transparent;
-            color: inherit;
-            font-size: 1rem;
-            outline: none;
-        }
-        body[data-theme="E"] select, body[data-theme="E"] input { border: 1px solid rgba(255,255,255,0.15); }
-        select option { color: #000000; }
+        /* Ära 3: Die Moderne (Edler Dark Mode) */
+        body[data-theme="E"] { background-color: #0b0f19; color: #e2e8f0; font-family: -apple-system, BlinkMacSystemFont, sans-serif; }
+        body[data-theme="E"] .top-ornament { background: #3b82f6; }
+        body[data-theme="E"] .card { background: #131c2e; border: 1px solid #1e293b; border-radius: 16px; box-shadow: 0 15px 30px rgba(0,0,0,0.3); }
+        body[data-theme="E"] .card h2 { color: #ffffff; border-bottom: 1px solid #1e293b; letter-spacing: 0.05em; font-weight: 700; }
+        body[data-theme="E"] button.phase-btn[data-active="true"] { background: #3b82f6; color: #ffffff; border-radius: 20px; box-shadow: 0 0 15px rgba(59,130,246,0.4); }
+        body[data-theme="E"] .badge, body[data-theme="E"] .results-box { background: #1e293b; border-left: 4px solid #3b82f6; color: #f8fafc; }
+        body[data-theme="E"] select, body[data-theme="E"] input { border: 1px solid #334155; background: #0b0f19; border-radius: 8px; color: #e2e8f0; }
 
-        /* Animierte einklappbare Boxen */
-        .collapsible {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease;
-            opacity: 0;
-        }
-        .collapsible.show { max-height: 800px; opacity: 1; }
+        /* --- STRUKTUR & LAYOUT --- */
+        .wrapper { width: 100%; max-width: 1100px; flex-grow: 1; z-index: 2; }
+        header { text-align: center; margin-bottom: 35px; }
+        h1 { margin: 10px 0 5px 0; font-size: 3rem; font-weight: 800; font-family: 'Cinzel', serif; letter-spacing: 2px; text-transform: uppercase; }
+        .subtitle { font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.2em; font-weight: 600; opacity: 0.5; }
 
-        .badge { padding: 15px; border-radius: 10px; text-align: center; font-weight: 700; font-size: 1.1rem; margin-bottom: 20px; }
-        .checklist { list-style: none; padding: 0; margin: 0; font-size: 0.9rem; }
-        .checklist li { display: flex; gap: 12px; margin-bottom: 12px; line-height: 1.4; }
-        .checklist input[type="checkbox"] { width: 18px; height: 18px; margin-top: 2px; cursor: pointer; }
+        /* Phasen-Leiste */
+        .nav-container { display: flex; justify-content: center; background: rgba(0,0,0,0.04); padding: 6px; border-radius: 14px; margin-top: 30px; gap: 8px; box-shadow: inset 0 2px 4px rgba(0,0,0,0.05); }
+        body[data-theme="E"] .nav-container { background: rgba(255,255,255,0.03); }
 
-        .rules-list { padding-left: 20px; margin: 0; font-size: 0.9rem; line-height: 1.6; }
-        .rules-list li { margin-bottom: 8px; }
+        .phase-btn { background: transparent; border: none; padding: 10px 18px; cursor: pointer; border-radius: 8px; color: inherit; opacity: 0.4; display: flex; flex-direction: column; align-items: center; min-width: 130px; }
+        .phase-btn:hover { opacity: 0.8; }
+        .phase-btn[data-active="true"] { opacity: 1; font-weight: bold; }
+        .btn-era { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 2px; opacity: 0.7; }
+        .btn-ph { font-size: 0.9rem; font-weight: 700; }
 
-        /* Rechner Zeilen */
-        .share-box { border-radius: 12px; padding: 15px; background: rgba(0,0,0,0.02); border: 1px solid rgba(0,0,0,0.05); margin-bottom: 20px; }
-        body[data-theme="E"] .share-box { background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); }
-        .share-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
-        .share-row:last-child { margin-bottom: 0; }
-        .share-row input { width: 80px; text-align: center; padding: 6px; }
-        .counter-text { text-align: right; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; opacity: 0.8; margin-top: 10px; }
+        .grid { display: grid; grid-template-columns: 1fr; gap: 30px; margin-top: 20px; }
+        @media (min-width: 850px) { .grid { grid-template-columns: 1fr 1fr; } }
+        .column { display: flex; flex-direction: column; gap: 30px; }
 
-        /* Knöpfe */
-        .btn-group { display: flex; gap: 12px; }
-        .btn {
-            flex: 1;
-            padding: 14px;
-            border: none;
-            border-radius: 10px;
-            font-weight: 700;
-            color: white;
-            cursor: pointer;
-            text-transform: uppercase;
-            font-size: 0.8rem;
-            letter-spacing: 0.05em;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-        }
-        .btn:active { transform: scale(0.98); }
+        .card { padding: 30px; position: relative; }
+        .card h2 { margin-top: 0; font-size: 1.25rem; padding-bottom: 12px; margin-bottom: 22px; }
+        .icon { margin-right: 6px; }
+
+        /* Formulare */
+        .form-group { margin-bottom: 22px; }
+        .form-group label { display: block; font-size: 0.75rem; text-transform: uppercase; font-weight: 700; margin-bottom: 8px; opacity: 0.7; letter-spacing: 0.5px; }
+        select, input { width: 100%; padding: 12px 15px; font-size: 0.95rem; font-weight: 500; outline: none; }
+        select option { color: #000000; background: #ffffff; }
+
+        /* --- SMOOTH COLLAPSE ANIMATION --- */
+        .collapsible { max-height: 0; overflow: hidden; transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.4s ease; opacity: 0; }
+        .collapsible.show { max-height: 600px; opacity: 1; margin-top: 20px; }
+
+        .badge { padding: 15px; text-align: center; font-weight: 700; font-size: 1.15rem; border-radius: 6px; margin-bottom: 22px; letter-spacing: 0.5px; }
+        .checklist { list-style: none; padding: 0; margin: 0; }
+        .checklist li { display: flex; gap: 14px; margin-bottom: 14px; font-size: 0.88rem; line-height: 1.5; }
+        .checklist input[type="checkbox"] { width: 18px; height: 18px; margin-top: 2px; cursor: pointer; flex-shrink: 0; }
+
+        .rules-list { padding-left: 20px; margin: 0; font-size: 0.9rem; line-height: 1.7; }
+        .rules-list li { margin-bottom: 10px; padding-left: 5px; }
+        .info-note { padding: 15px; font-size: 0.78rem; border-radius: 6px; margin-top: 20px; line-height: 1.5; background: rgba(0,0,0,0.03); border: 1px solid rgba(0,0,0,0.05); }
+        body[data-theme="E"] .info-note { background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); }
+
+        /* Ledger */
+        .share-box { border-radius: 8px; padding: 20px; background: rgba(0,0,0,0.02); border: 1px solid rgba(0,0,0,0.06); margin-bottom: 22px; }
+        body[data-theme="E"] .share-box { background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.04); }
+        .share-box-title { display: block; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; opacity: 0.7; margin-bottom: 15px; letter-spacing: 0.5px; }
+        .share-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; font-size: 0.9rem; }
+        .share-row input { width: 85px; text-align: center; padding: 8px; font-weight: 700; }
+        .counter-text { text-align: right; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; margin-top: 15px; opacity: 0.8; }
+
+        /* Buttons */
+        .btn-group { display: flex; gap: 15px; }
+        .btn { flex: 1; padding: 15px; border: none; font-weight: 700; color: white; cursor: pointer; text-transform: uppercase; font-size: 0.85rem; letter-spacing: 1px; border-radius: 4px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .btn:hover { filter: brightness(1.1); transform: translateY(-1px); }
+        .btn:active { transform: translateY(1px); }
         .btn-pay { background: #059669; }
         .btn-withhold { background: #d97706; }
 
-        .results-box { margin-top: 20px; padding: 15px; border-radius: 10px; font-size: 0.9rem; }
-        .results-box h4 { margin: 0 0 10px 0; text-transform: uppercase; font-size: 0.75rem; opacity: 0.7; }
-        .results-box ul { padding-left: 20px; margin: 0; }
-        .results-box li { margin-bottom: 6px; }
+        .results-box { padding: 20px; border-radius: 6px; }
+        .results-box h4 { margin: 0 0 12px 0; text-transform: uppercase; font-size: 0.75rem; opacity: 0.8; }
+        .results-box ul { padding-left: 20px; margin: 0; font-size: 0.9rem; line-height: 1.6; }
+        .results-box li { margin-bottom: 8px; }
 
-        footer { text-align: center; font-size: 0.7rem; opacity: 0.4; margin-top: 50px; padding-top: 20px; border-top: 1px solid rgba(0,0,0,0.05); width: 100%; }
+        footer { text-align: center; font-size: 0.75rem; opacity: 0.3; margin-top: 60px; padding-top: 20px; border-top: 1px solid rgba(0,0,0,0.05); width: 100%; font-family: sans-serif; }
     </style>
 </head>
 <body data-theme="2">
 
+    <div class="top-ornament"></div>
+
     <div class="wrapper">
         <header>
             <h1>1880: China</h1>
-            <div class="subtitle">Digitaler Spielbegleiter</div>
+            <div class="subtitle">Operational Companion & Dividend Ledger</div>
             
             <div class="nav-container">
-                <button class="phase-btn" id="btn-2" data-active="true" onclick="changePhase('2')">Phase 2</button>
-                <button class="phase-btn" id="btn-4" data-active="false" onclick="changePhase('4')">Phase 4</button>
-                <button class="phase-btn" id="btn-6" data-active="false" onclick="changePhase('6')">Phase 6</button>
-                <button class="phase-btn" id="btn-E" data-active="false" onclick="changePhase('E')">Phase E</button>
-                <div class="active-slider"></div>
+                <button class="phase-btn" id="btn-2" data-active="true">
+                    <span class="btn-era">Qing-Dynastie</span>
+                    <span class="btn-ph">Phase 2</span>
+                </button>
+                <button class="phase-btn" id="btn-4" data-active="false">
+                    <span class="btn-era">Industrialisierung</span>
+                    <span class="btn-ph">Phase 4</span>
+                </button>
+                <button class="phase-btn" id="btn-6" data-active="false">
+                    <span class="btn-era">Republik</span>
+                    <span class="btn-ph">Phase 6</span>
+                </button>
+                <button class="phase-btn" id="btn-E" data-active="false">
+                    <span class="btn-era">Moderne Ära</span>
+                    <span class="btn-ph">Phase E</span>
+                </button>
             </div>
         </header>
 
         <main class="grid">
             
-            <div>
+            <div class="column">
                 <section class="card">
-                    <h2>📋 Spielvorbereitung</h2>
+                    <h2><span class="icon">🏮</span> Spielaufbau & Logistik</h2>
                     <div class="form-group">
-                        <label for="players">Spieleranzahl am Tisch:</label>
-                        <select id="players" onchange="runSetupCheck()">
+                        <label for="players">Gouverneure am Tisch:</label>
+                        <select id="players">
                             <option value="0">-- Bitte wählen --</option>
                             <option value="3">3 Spieler</option>
                             <option value="4">4 Spieler</option>
@@ -194,61 +185,72 @@
                     <div id="setup-collapse" class="collapsible">
                         <div class="badge" id="cash-badge">Startkapital: ¥ 0</div>
                         <ul class="checklist">
-                            <li><input type="checkbox"> <span>Geld an alle Spieler auszahlen.</span></li>
-                            <li><input type="checkbox"> <span>Privatgesellschaften <strong>P0 bis P7</strong> auslegen.</span></li>
-                            <li><input type="checkbox"> <span>Aktienstapel: Unten 5x 10%, Gründungskarte, 3x 10%, oben 3x Direktor.</span></li>
-                            <li><input type="checkbox"> <span id="checklist-turn-cards">Zugreihenfolgekarten bereitlegen.</span></li>
+                            <li>
+                                <input type="checkbox"> 
+                                <div><strong>Kapitalverteilung:</strong> Händige das Startguthaben komplett in bar an die Spieler aus. Der Rest bildet die unerschöpfliche Bank.</div>
+                            </li>
+                            <li>
+                                <input type="checkbox"> 
+                                <div><strong>Privatgesellschaften (P0–P7):</strong> Sortiere die Karten numerisch. Lege sie offen aus. Sie bilden den kaiserlichen Markt.</div>
+                            </li>
+                            <li>
+                                <input type="checkbox"> 
+                                <div><strong>Aktien-Zertifikate (10%-Stapel):</strong> Sortiere die Anteile jeder Eisenbahngesellschaft exakt: Ganz unten fünf 10%-Karten, darüber die Gründungskarte (Par-Zertifikat), darauf drei weitere 10%-Karten und obenauf das 30%-Direktorenzertifikat.</div>
+                            </li>
+                            <li>
+                                <input type="checkbox"> 
+                                <div id="checklist-turn-cards">Zugreihenfolgekarten bereitstellen.</div>
+                            </li>
                         </ul>
                     </div>
                 </section>
 
-                <section class="card" style="margin-top: 30px;">
-                    <h2>🚂 Epochen-Auswirkungen</h2>
-                    <ul class="rules-list" id="rules-output">
-                        <li>Gelbe Schienenteile sind erlaubt.</li>
-                        <li>Schmalspur-Minors dürfen Strecken bauen.</li>
-                        <li>Züge vom Typ 2 sind voll einsatzbereit.</li>
-                    </ul>
+                <section class="card">
+                    <h2><span class="icon">📜</span> Kaiserliches Dekret & Epochen-Regeln</h2>
+                    <ul class="rules-list" id="rules-output"></ul>
+                    <div class="info-note">
+                        <strong>⚠️ Feilschen um P0 & P1:</strong> Finden diese beiden Gesellschaften in der Aktienrunde keinen Käufer zum Nominalwert, sinkt ihr Preis dauerhaft um ¥ 5. Erreicht der Preis ¥ 0, <em>muss</em> der nächste Spieler am Zug die Karte kostenfrei annehmen!
+                    </div>
                 </section>
             </div>
 
-            <div>
+            <div class="column">
                 <section class="card">
-                    <h2>💰 Dividenden-Ledger</h2>
+                    <h2><span class="icon">⚖️</span> Dividenden- und Ertragsbuch</h2>
                     <div class="form-group">
-                        <label>Gesamter Routenertrag:</label>
+                        <label>Gesamter Routenertrag der Gesellschaft (OR):</label>
                         <input type="number" id="revenue" placeholder="z.B. 350" step="10">
                     </div>
 
                     <div class="share-box">
-                        <label style="display:block; font-size:0.75rem; font-weight:700; uppercase; opacity:0.7; margin-bottom:10px;">Aktienbesitz (Muss 100% sein)</label>
+                        <label class="share-box-title">Aktienverteilung am Markt (Exakt 100%)</label>
                         <div class="share-row">
-                            <span>Spieler 1:</span>
-                            <div><input type="number" id="share-p1" value="0" step="10" oninput="countShares()"> %</div>
+                            <span>Direktor / Spieler 1:</span>
+                            <div><input type="number" id="share-p1" value="0" step="10"> %</div>
                         </div>
                         <div class="share-row">
-                            <span>Spieler 2:</span>
-                            <div><input type="number" id="share-p2" value="0" step="10" oninput="countShares()"> %</div>
+                            <span>Aktionär / Spieler 2:</span>
+                            <div><input type="number" id="share-p2" value="0" step="10"> %</div>
                         </div>
                         <div class="share-row">
-                            <span>Spieler 3:</span>
-                            <div><input type="number" id="share-p3" value="0" step="10" oninput="countShares()"> %</div>
+                            <span>Aktionär / Spieler 3:</span>
+                            <div><input type="number" id="share-p3" value="0" step="10"> %</div>
                         </div>
                         <div class="share-row">
-                            <span>Firmenkasse / Unverkauft:</span>
-                            <div><input type="number" id="share-treasury" value="0" step="10" oninput="countShares()"> %</div>
+                            <span>Firmenkasse (Treasury / Unverkauft):</span>
+                            <div><input type="number" id="share-treasury" value="0" step="10"> %</div>
                         </div>
-                        <div class="counter-text">Eingetragen: <span id="share-total">0%</span></div>
+                        <div class="counter-text">Bilanzierte Anteile: <span id="share-total">0%</span></div>
                     </div>
 
                     <div class="btn-group">
-                        <button class="btn btn-pay" onclick="runPayout(true)">Ausschütten</button>
-                        <button class="btn btn-withhold" onclick="runPayout(false)">Einbehalten</button>
+                        <button class="btn btn-pay" id="btn-action-pay">Ausschütten</button>
+                        <button class="btn btn-withhold" id="btn-action-withhold">Einbehalten</button>
                     </div>
 
                     <div id="payout-collapse" class="collapsible">
                         <div class="results-box">
-                            <h4>Auszahlungs-Protokoll:</h4>
+                            <h4>Finanzprotokoll der Abrechnung:</h4>
                             <ul id="payout-list"></ul>
                         </div>
                     </div>
@@ -257,54 +259,94 @@
         </main>
     </div>
 
-    <footer>
-        1880: China Companion App • Läuft 100% unabhängig lokal im Browser
-    </footer>
+    <audio id="bg-audio" loop></audio>
 
     <script>
-        // Phasen-Datenbank
+        // Detaillierte historische Regelsätze und Musik-Zuweisung
         const phaseData = {
-            '2': [
-                'Gelbe Schienenteile sind erlaubt.',
-                'Schmalspur-Minors dürfen Strecken bauen.',
-                'Züge vom Typ 2 sind voll einsatzbereit.'
-            ],
-            '4': [
-                'Grüne Upgrades sind ab sofort freigeschaltet.',
-                'Ausländische Investoren verändern ihr Verhalten.',
-                '⚠️ Typ 2 Züge werden am Ende der nächsten Operationsrunde OBSOLET!'
-            ],
-            '6': [
-                'Braune Streckenteile dürfen verbaut werden.',
-                'Regierungszüge (G-Trains) kommen auf den Markt.',
-                '⚠️ Typ 3 Züge werden am Ende der nächsten Operationsrunde obsolet!'
-            ],
-            'E': [
-                'Graue finale Upgrades (Magnetschwebebahn) sind offen.',
-                '⚠️ Typ 4 Züge werden sofort obsolet!'
-            ]
+            '2': {
+                music: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3', // HIER DEINEN MP3-LINK REINKOPIEREN
+                rules: [
+                    '🚄 Permittierte Strecken: Es dürfen ausschließlich gelbe (Basis-)Schienenteile verbaut werden.',
+                    '🪙 Schmalspur-Minors: Die kleinen Schmalspurbahnen erwachen zum Leben und dürfen Schienen legen.',
+                    '🚂 Fuhrpark-Status: Loks vom Typ 2 sind voll funktionsfähig und im freien Verkauf.',
+                    '📦 Limitierung: Jede Gesellschaft ist strikt auf maximal zwei unverkaufte Loks im Depot beschränkt.'
+                ]
+            },
+            '4': {
+                music: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3', // HIER DEINEN MP3-LINK REINKOPIEREN
+                rules: [
+                    '🟢 Ausbauphase: Grüne Schienen-Upgrades sind ab sofort für alle Gesellschaften freigeschaltet.',
+                    '🤝 Ausländische Investoren: Das Verhalten der Foreign Investors ändert sich drastisch gem. Regelbuch Kapitel 7.',
+                    '⚠️ Technischer Wandel: Züge vom Typ 2 werden am Ende der kommenden Operationsrunde unbarmherzig obsolet (sie rosten). Planen Sie das Firmenbudget vorsichtig!',
+                    '🏢 Zertifikatslimit: Das allgemeine Handkartenlimit für Aktienzertifikate verschiebt sich.'
+                ]
+            },
+            '6': {
+                music: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3', // HIER DEINEN MP3-LINK REINKOPIEREN
+                rules: [
+                    '🟤 Fortgeschrittenes Netz: Komplexe braune Streckenteile dürfen ab sofort über bestehende Verbindungen gelegt werden.',
+                    '🏛️ Staatsintervention: Die mächtigen Regierungszüge (G-Trains) betreten den Markt.',
+                    '⚠️ Flottensterben: Züge vom Typ 3 werden am Ende der nächsten Operationsrunde obsolet.',
+                    '📈 Aktienmarkt: Einbehaltene Erträge können nun heftigere Kursstürze auslösen.'
+                ]
+            },
+            'E': {
+                music: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-8.mp3', // HIER DEINEN MP3-LINK REINKOPIEREN
+                rules: [
+                    '🚄 Magnetschwebebahn (Maglev): Die finalen grauen Upgrades und die High-Tech-Sektoren sind offen.',
+                    '⚠️ Sofortiger Rost: Züge vom Typ 4 rosten per sofort und werden ohne Übergangsfrist aus dem Spiel entfernt!',
+                    '🛑 Spielende-Trigger: Der Countdown für das finale Abrechnungs-Szenario der Moderne beginnt.'
+                ]
+            }
         };
 
-        // 1. Phasen umschalten & Design morphen
+        // Event-Listeners binden (Sicherer Schutz gegen GitHub CSP Blockaden)
+        document.addEventListener('DOMContentLoaded', () => {
+            // Phasen-Buttons aktivieren
+            ['2', '4', '6', 'E'].forEach(p => {
+                document.getElementById('btn-' + p).addEventListener('click', () => changePhase(p));
+            });
+
+            // Inputs überwachen
+            document.getElementById('players').addEventListener('change', runSetupCheck);
+            ['p1', 'p2', 'p3', 'treasury'].forEach(id => {
+                document.getElementById('share-' + id).addEventListener('input', countShares);
+            });
+
+            // Rechner-Buttons aktivieren
+            document.getElementById('btn-action-pay').addEventListener('click', () => runPayout(true));
+            document.getElementById('btn-action-withhold').addEventListener('click', () => runPayout(false));
+
+            // Initiale Phase laden
+            changePhase('2');
+        });
+
         function changePhase(phaseKey) {
-            // Body Attribut ändern löst CSS-Transition aus
             document.body.setAttribute('data-theme', phaseKey);
-            
-            // Buttons deaktivieren/aktivieren
             document.querySelectorAll('.phase-btn').forEach(btn => btn.setAttribute('data-active', 'false'));
             document.getElementById('btn-' + phaseKey).setAttribute('data-active', 'true');
             
             // Regeln austauschen
             const rulesOutput = document.getElementById('rules-output');
             rulesOutput.innerHTML = '';
-            phaseData[phaseKey].forEach(rule => {
+            phaseData[phaseKey].rules.forEach(rule => {
                 const li = document.createElement('li');
-                li.innerText = rule;
+                li.innerHTML = rule;
                 rulesOutput.appendChild(li);
             });
+
+            // Audio ansteuern
+            const audio = document.getElementById('bg-audio');
+            if (audio && phaseData[phaseKey].music) {
+                audio.src = phaseData[phaseKey].music;
+                audio.volume = 0.2; 
+                audio.play().catch(() => {
+                    console.log("Audio-Wiedergabe wartet auf die erste Interaktion auf der Seite.");
+                });
+            }
         }
 
-        // 2. Setup-Berechnung & Aufklapp-Effekt
         function runSetupCheck() {
             const players = parseInt(document.getElementById('players').value);
             const box = document.getElementById('setup-collapse');
@@ -321,14 +363,11 @@
             if (players === 6) cash = 340;
             if (players === 7) cash = 300;
 
-            document.getElementById('cash-badge').innerText = `Startkapital: ¥ ${cash}`;
-            document.getElementById('checklist-turn-cards').innerHTML = `Mische Zugreihenfolgekarten <strong>0 bis ${players - 1}</strong>.`;
-            
-            // Box geschmeidig öffnen
+            document.getElementById('cash-badge').innerText = `Kaiserliches Startkapital: ¥ ${cash} pro Gouverneur`;
+            document.getElementById('checklist-turn-cards').innerHTML = `Abzählen der <strong>Zugreihenfolgekarten (0 bis ${players - 1})</strong>. Der Spieler mit Karte 0 erhält sofort die historische, hölzerne Startspieler-Lokomotive!`;
             box.classList.add('show');
         }
 
-        // 3. Aktien-Live-Zähler
         function countShares() {
             const p1 = parseInt(document.getElementById('share-p1').value) || 0;
             const p2 = parseInt(document.getElementById('share-p2').value) || 0;
@@ -339,17 +378,10 @@
             const totalSpan = document.getElementById('share-total');
             
             totalSpan.innerText = total + '%';
-            if (total === 100) {
-                totalSpan.style.color = '#059669';
-                totalSpan.style.fontWeight = '800';
-            } else {
-                totalSpan.style.color = '#ef4444';
-                totalSpan.style.fontWeight = '700';
-            }
+            totalSpan.style.color = (total === 100) ? '#059669' : '#ef4444';
             return total;
         }
 
-        // 4. Dividenden berechnen & ausgeben
         function runPayout(isPayout) {
             const revenue = parseInt(document.getElementById('revenue').value) || 0;
             const list = document.getElementById('payout-list');
@@ -358,35 +390,33 @@
             list.innerHTML = '';
 
             if (revenue <= 0) {
-                alert("Bitte gib zuerst einen gültigen Routenertrag ein.");
+                alert("Bitte trage zuerst den erwirtschafteten Streckenertrag der aktuellen Betreiberrunde ein.");
                 box.classList.remove('show');
                 return;
             }
 
             if (!isPayout) {
-                list.innerHTML += `<li><strong>Unternehmen behält Ertrag ein:</strong> +¥ ${revenue} in die Firmenkasse.</li>`;
-                list.innerHTML += `<li><em>Kurs-Effekt:</em> Marker sinkt oder wandert nach links.</li>`;
+                list.innerHTML += `<li><strong>Präsidiumsentscheid:</strong> Die Dividende wird komplett einbehalten. +¥ ${revenue} wandern direkt in die Firmenkasse der Eisenbahn.</li>`;
+                list.innerHTML += `<li><em>Kursmarker-Anpassung:</em> Der Aktienkurs sinkt oder wandert um ein Feld nach links (bzw. nach unten).</li>`;
                 box.classList.add('show');
                 return;
             }
 
             if (countShares() !== 100) {
-                alert("Fehler: Die Summe aller Aktienanteile muss exakt 100% ergeben!");
+                alert("Achtung: Die Summe aller verbuchten Aktienanteile am Tisch muss mathematisch exakt 100% ergeben!");
                 box.classList.remove('show');
                 return;
             }
 
-            const shareIds = { 'p1': 'Spieler 1', 'p2': 'Spieler 2', 'p3': 'Spieler 3', 'treasury': 'Firmenkasse' };
+            const shareIds = { 'p1': 'Direktor (Spieler 1)', 'p2': 'Aktionär (Spieler 2)', 'p3': 'Aktionär (Spieler 3)', 'treasury': 'Firmenkasse (Treasury)' };
             for (const [id, name] of Object.entries(shareIds)) {
                 const percent = parseInt(document.getElementById('share-' + id).value) || 0;
                 if (percent > 0) {
                     const cash = Math.round(revenue * (percent / 100));
-                    list.innerHTML += `<li><strong>${name}:</strong> +¥ ${cash} (${percent}%)</li>`;
+                    list.innerHTML += `<li><strong>${name}:</strong> Erhält eine Ausschüttung von <strong>¥ ${cash}</strong> (entspricht ${percent}% Anteil).</li>`;
                 }
             }
-            list.innerHTML += `<li><em>Kurs-Effekt:</em> Marker steigt / rückt ein Feld nach rechts.</li>`;
-            
-            // Ergebnis aufklappen
+            list.innerHTML += `<li><em>Kursmarker-Anpassung:</em> Da Dividenden gezahlt wurden, steigt der Aktienkurs um ein Feld nach rechts (bzw. nach oben).</li>`;
             box.classList.add('show');
         }
     </script>
