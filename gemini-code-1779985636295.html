@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>1880: China – Bahn-Begleiter</title>
+    
+    <!-- Tailwind CSS Play CDN für das Design -->
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    
+    <!-- Google Fonts für die passende Atmosphäre -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;700&family=Noto+Serif+SC:wght@400;700&display=swap" rel="stylesheet">
+
+    <!-- Alpine.js für die interaktive Logik -->
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+
+    <style>
+        /* Sanfte Übergänge beim Epochenwechsel */
+        .theme-transition {
+            transition: background-color 1000ms ease, color 500ms ease, border-color 500ms ease;
+        }
+        /* Definition der Schriftarten je nach Epoche */
+        .font-qing { font-family: 'Noto Serif SC', serif; }
+        .font-modern { font-family: 'Noto Sans SC', sans-serif; }
+    </style>
+</head>
+<body 
+    x-data="gameCompanion()" 
+    class="theme-transition min-h-screen p-4 md:p-8"
+    :class="currentTheme.bg + ' ' + currentTheme.text + ' ' + currentTheme.font"
+>
+
+    <!-- Header & Epochen-Auswahl -->
+    <header class="max-w-4xl mx-auto mb-8 text-center border-b pb-6" :class="currentTheme.border">
+        <h1 class="text-3xl md:text-4xl font-bold mb-4">1880: China Rail Companion</h1>
+        <p class="text-sm opacity-75 mb-4">Wähle die aktuelle Phase aus, um das Design und die Regeln anzupassen:</p>
+        
+        <div class="flex flex-wrap justify-center gap-2">
+            <template x-for="(p, key) in phases" :key="key">
+                <button 
+                    @click="switchPhase(key)"
+                    class="px-4 py-2 rounded font-bold text-sm cursor-pointer transition shadow-sm border"
+                    :class="activePhase === key ? p.btnActive : p.btnInactive"
+                    x-text="'Phase ' + key"
+                ></button>
+            </template>
+        </div>
+    </header>
+
+    <main class="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-6">
+        
+        <!-- LINKS: Setup & Phasen-Informationen -->
+        <div class="space-y-6">
+            <!-- Spielvorbereitung -->
+            <section class="theme-transition p-6 rounded shadow border" :class="currentTheme.card + ' ' + currentTheme.border">
+                <h2 class="text-xl font-bold mb-4 flex items-center gap-2">
+                    <span>📋</span> Spielvorbereitung
+                </h2>
+                
+                <div class="mb-4">
+                    <label class="block text-sm font-bold mb-2" for="players">Anzahl der Spieler:</label>
+                    <select 
+                        id="players" 
+                        x-model="playerCount" 
+                        class="w-full p-2 rounded border bg-transparent"
+                        :class="currentTheme.border"
+                    >
+                        <option value="0">-- Bitte wählen --</option>
+                        <option value="3">3 Spieler</option>
+                        <option value="4">4 Spieler</option>
+                        <option value="5">5 Spieler</option>
+                        <option value="6">6 Spieler</option>
+                        <option value="7">7 Spieler</option>
+                    </select>
+                </div>
+
+                <div x-show="playerCount > 0" x-transition class="space-y-4">
+                    <div class="p-3 rounded font-bold text-center" :class="currentTheme.highlight">
+                        Startkapital pro Spieler: ¥ <span x-text="calculateStartingCash()"></span>
+                    </div>
+                    
+                    <ul class="text-sm space-y-2 opacity-90">
+                        <li class="flex gap-2"><input type="checkbox" class="mt-1"> <span>Verteile das Startkapital an die Spieler.</span></li>
+                        <li class="flex gap-2"><input type="checkbox" class="mt-1"> <span>Lege die Privatgesellschaften <strong>P0 bis P7</strong> bereit.</span></li>
+                        <li class="flex gap-2"><input type="checkbox" class="mt-1"> <span>Sortiere Aktien: Unten fünf 10%-Aktien, Gründungskarte, drei 10%-Aktien, oben 3 Direktorenzertifikate.</span></li>
+                        <li class="flex gap-2"><input type="checkbox" class="mt-1"> <span>Nimm die Zugreihenfolgekarten <strong>0 bis <span x-text="playerCount - 1"></span></strong>.</span></li>
+                        <li class="flex gap-2"><input type="checkbox" class="mt-1"> <span class="text-xs italic">Wer Karte 0 zieht, erhält die hölzerne Startspieler-Lok.</span></li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- Aktuelle Epochen-Regeln -->
+            <section class="theme-transition p-6 rounded shadow border" :class="currentTheme.card + ' ' + currentTheme.border">
+                <h2 class="text-xl font-bold mb-2 flex items-center gap-2">
+                    <span>🚂</span> Phasen-Effekte (Phase <span x-text="activePhase"></span>)
+                </h2>
+                <ul class="text-sm space-y-2 list-disc pl-5 mt-4">
+                    <template x-for="rule in phases[activePhase].rules">
+                        <li x-text="rule"></li>
+                    </template>
+                </ul>
+                <div class="mt-4 p-3 rounded text-xs border" :class="currentTheme.highlight + ' ' + currentTheme.border">
+                    <strong>P0 & P1 Sonderregel:</strong> Finden sie keinen Käufer, sinkt der Preis um ¥ 5. Wer sie für ¥ 0 angeboten bekommt, MUSS sie nehmen.
+                </div>
+            </section>
+        </div>
+
+        <!-- RECHTS: Dividenden-Rechner -->
+        <div class="space-y-6">
+            <section class="theme-transition p-6 rounded shadow border" :class="currentTheme.card + ' ' + currentTheme.border">
+                <h2 class="text-xl font-bold mb-4 flex items-center gap-2">
+                    <span>💰</span> Dividenden & Ertrags-Ledger
+                </h2>
+                
+                <div class="mb-4">
+                    <label class="block text-sm font-bold mb-1">Gesamter Routenertrag:</label>
+                    <input 
+                        type="number" 
+                        x-model.number="revenue" 
+                        placeholder="z.B. 350" 
+                        step="10"
+                        class="w-full p-2 rounded border bg-transparent"
+                        :class="currentTheme.border"
+                    >
+                </div>
+
+                <div class="space-y-3 mb-6">
+                    <h3 class="text-sm font-bold border-b pb-1" :class="currentTheme.border">Aktienverteilung (Muss 100% ergeben)</h3>
+                    
+                    <div class="flex justify-between items-center gap-4 text-sm">
+                        <label>Spieler 1 (%):</label>
+                        <input type="number" x-model.number="shares.p1" step="10" min="0" max="100" class="w-20 p-1 border rounded bg-transparent text-center" :class="currentTheme.border">
+                    </div>
+                    <div class="flex justify-between items-center gap-4 text-sm">
+                        <label>Spieler 2 (%):</label>
+                        <input type="number" x-model.number="shares.p2" step="10" min="0" max="100" class="w-20 p-1 border rounded bg-transparent text-center" :class="currentTheme.border">
+                    </div>
+                    <div class="flex justify-between items-center gap-4 text-sm">
+                        <label>Spieler 3 (%):</label>
+                        <input type="number" x-model.number="shares.p3" step="10" min="0" max="100" class="w-20 p-1 border rounded bg-transparent text-center" :class="currentTheme.border">
+                    </div>
+                    <div class="flex justify-between items-center gap-4 text-sm">
+                        <label>Firmenkasse / Unverkauft (%):</label>
+                        <input type="number" x-model.number="shares.treasury" step="10" min="0" max="100" class="w-20 p-1 border rounded bg-transparent text-center" :class="currentTheme.border">
+                    </div>
+
+                    <div class="text-right text-xs font-bold mt-2">
+                        Gesamt eingetragen: <span :class="totalShares === 100 ? 'text-green-500' : 'text-red-500'" x-text="totalShares + '%'"></span>
+                    </div>
+                </div>
+
+                <div class="flex gap-2">
+                    <button 
+                        @click="payout(true)" 
+                        class="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 px-4 rounded text-sm cursor-pointer transition shadow"
+                    >
+                        Ausschütten
+                    </button>
+                    <button 
+                        @click="payout(false)" 
+                        class="flex-1 bg-amber-600 hover:bg-amber-700 text-white font-bold py-3 px-4 rounded text-sm cursor-pointer transition shadow"
+                    >
+                        Einbehalten
+                    </button>
+                </div>
+
+                <!-- Ergebnisse -->
+                <div x-show="showResults" x-transition class="mt-6 p-4 rounded border text-sm" :class="currentTheme.highlight + ' ' + currentTheme.border">
+                    <h4 class="font-bold mb-2">Auszahlungs-Protokoll:</h4>
+                    <ul class="space-y-1">
+                        <template x-for="log in payoutLog">
+                            <li x-html="log"></li>
+                        </template>
+                    </ul>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Musik-Player (Versteckt, wird über JS gesteuert) -->
+    <audio id="bg-audio" loop></audio>
+
+</body>
+</html>

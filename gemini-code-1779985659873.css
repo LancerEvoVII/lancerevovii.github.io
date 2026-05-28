@@ -1,0 +1,5 @@
+/* Alles Relevante wird über Tailwind CSS direkt im HTML gesteuert. */
+html, body {
+    margin: 0;
+    padding: 0;
+}
