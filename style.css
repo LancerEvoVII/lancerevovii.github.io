@@ -1,5 +1,93 @@
-/* Alles Relevante wird über Tailwind CSS direkt im HTML gesteuert. */
-html, body {
+/* Globale Stile & Schrifteinstellungen */
+* { box-sizing: border-box; }
+body {
     margin: 0;
-    padding: 0;
+    padding: 20px;
+    min-height: 100vh;
+    transition: background-color 0.8s ease, color 0.4s ease;
 }
+
+.font-modern { font-family: 'Noto Sans SC', sans-serif; }
+.font-qing { font-family: 'Noto Serif SC', serif; }
+
+/* THEME 1: PHASE 2 (Qing-Dynastie / Pergament) */
+body[data-theme="qing"] { background-color: #f4edd2; color: #2c2519; font-family: 'Noto Serif SC', serif; }
+body[data-theme="qing"] .main-header { border-bottom: 2px solid #8b7355; }
+body[data-theme="qing"] .card { background-color: #fffdf6; border: 1px solid #8b7355; }
+body[data-theme="qing"] .phase-buttons button { border: 1px solid #8b7355; color: #8b7355; background: transparent; }
+body[data-theme="qing"] .phase-buttons button.btn-active { background-color: #8b7355; color: white; }
+body[data-theme="qing"] .highlight-box, body[data-theme="qing"] .info-note, body[data-theme="qing"] .results-boxBox { background-color: #e2d5b6; border-left: 4px solid #8b7355; }
+body[data-theme="qing"] select, body[data-theme="qing"] input { border: 1px solid #8b7355; background-color: #fffdf6; color: #2c2519; }
+
+/* THEME 2: PHASE 4 & 6 (Industrialisierung / Republik) */
+body[data-theme="industrial"] { background-color: #e2e8f0; color: #1e293b; }
+body[data-theme="industrial"] .main-header { border-bottom: 2px solid #64748b; }
+body[data-theme="industrial"] .card { background-color: #ffffff; border: 1px solid #cbd5e1; }
+body[data-theme="industrial"] .phase-buttons button { border: 1px solid #059669; color: #059669; background: transparent; }
+body[data-theme="industrial"] .phase-buttons button.btn-active { background-color: #059669; color: white; }
+body[data-theme="industrial"] .highlight-box, body[data-theme="industrial"] .info-note, body[data-theme="industrial"] .results-boxBox { background-color: #f1f5f9; border-left: 4px solid #059669; }
+body[data-theme="industrial"] select, body[data-theme="industrial"] input { border: 1px solid #94a3b8; background-color: #ffffff; color: #1e293b; }
+
+/* THEME 3: PHASE E (Moderne / Dark Mode) */
+body[data-theme="modern"] { background-color: #0f172a; color: #f8fafc; }
+body[data-theme="modern"] .main-header { border-bottom: 2px solid #334155; }
+body[data-theme="modern"] .card { background-color: #1e293b; border: 1px solid #334155; }
+body[data-theme="modern"] .phase-buttons button { border: 1px solid #3b82f6; color: #3b82f6; background: transparent; }
+body[data-theme="modern"] .phase-buttons button.btn-active { background-color: #3b82f6; color: white; }
+body[data-theme="modern"] .highlight-box, body[data-theme="modern"] .info-note, body[data-theme="modern"] .results-boxBox { background-color: #334155; border-left: 4px solid #3b82f6; }
+body[data-theme="modern"] select, body[data-theme="modern"] input { border: 1px solid #475569; background-color: #0f172a; color: #f8fafc; }
+
+/* Layout Elemente */
+.main-header { max-width: 900px; margin: 0 auto 30px auto; text-center: center; text-align: center; padding-bottom: 20px; }
+.main-header h1 { margin-bottom: 5px; font-size: 2.2rem; }
+.subtitle { font-size: 0.9rem; opacity: 0.8; margin-bottom: 15px; }
+
+.phase-buttons { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; }
+.phase-buttons button { padding: 8px 16px; font-weight: bold; border-radius: 4px; cursor: pointer; transition: all 0.3s ease; font-size: 0.85rem; }
+
+.grid-container { max-width: 900px; margin: 0 auto; display: grid; grid-template-columns: 1fr; gap: 20px; }
+@media (min-width: 768px) { .grid-container { grid-template-columns: 1fr 1fr; } }
+
+.column { display: flex; flex-direction: column; gap: 20px; }
+.card { padding: 20px; border-radius: 8px; }
+.card h2 { margin-top: 0; font-size: 1.25rem; border-bottom: 1px solid rgba(0,0,0,0.1); padding-bottom: 10px; display: flex; align-items: center; gap: 8px; }
+body[data-theme="modern"] .card h2 { border-bottom: 1px solid rgba(255,255,255,0.1); }
+
+/* Formular Elemente */
+.input-group { margin-bottom: 15px; display: flex; flex-direction: column; gap: 5px; }
+.input-group label { font-size: 0.9rem; font-weight: bold; }
+select, input { padding: 10px; border-radius: 4px; width: 100%; font-size: 1rem; }
+
+/* Setup & Checklisten */
+.setup-details { display: flex; flex-direction: column; gap: 15px; }
+.highlight-box { padding: 12px; border-radius: 4px; text-align: center; font-weight: bold; }
+.setup-checklist { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 10px; font-size: 0.85rem; }
+.setup-checklist li { display: flex; gap: 10px; align-items: flex-start; }
+.setup-checklist input[type="checkbox"] { width: auto; margin-top: 3px; cursor: pointer; }
+.subtext { font-size: 0.75rem; font-style: italic; opacity: 0.8; }
+
+.rules-list { padding-left: 20px; font-size: 0.85rem; display: flex; flex-direction: column; gap: 8px; }
+.info-note { padding: 10px; font-size: 0.75rem; border-radius: 4px; margin-top: 15px; }
+
+/* Dividenden Sektion */
+.shares-section h3 { font-size: 0.9rem; border-bottom: 1px solid rgba(0,0,0,0.1); padding-bottom: 5px; margin-bottom: 12px; }
+body[data-theme="modern"] .shares-section h3 { border-bottom: 1px solid rgba(255,255,255,0.1); }
+.share-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; font-size: 0.85rem; }
+.share-row input { width: 80px; text-align: center; padding: 6px; }
+
+.total-counter { text-align: right; font-size: 0.8rem; font-weight: bold; margin-top: 10px; }
+.text-green { color: #10b981; }
+.text-red { color: #ef4444; }
+
+.button-group { display: flex; gap: 10px; margin-top: 15px; }
+.button-group button { flex: 1; padding: 12px; border: none; border-radius: 4px; font-weight: bold; color: white; cursor: pointer; font-size: 0.9rem; transition: background 0.2s; }
+.btn-pay { background-color: #059669; }
+.btn-pay:hover { background-color: #047857; }
+.btn-withhold { background-color: #d97706; }
+.btn-withhold:hover { background-color: #b45309; }
+
+.results-boxBox { margin-top: 25px; padding: 15px; border-radius: 4px; font-size: 0.85rem; }
+.results-boxBox h4 { margin-top: 0; margin-bottom: 10px; }
+.results-boxBox ul { padding-left: 20px; display: flex; flex-direction: column; gap: 5px; }
+
+.shadow { box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); }
