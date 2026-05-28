@@ -14,41 +14,11 @@ function gameCompanion() {
             treasury: 0
         },
 
-        // Theme-Definitionen passend zur Epoche
-        themes: {
-            qing: {
-                bg: 'bg-[#f4edd2]',
-                text: 'text-[#2c2519]',
-                card: 'bg-[#fffdf6]',
-                border: 'border-[#8b7355]',
-                highlight: 'bg-[#e2d5b6]',
-                font: 'font-qing'
-            },
-            industrial: {
-                bg: 'bg-[#e2e8f0]',
-                text: 'text-[#1e293b]',
-                card: 'bg-white',
-                border: 'border-slate-400',
-                highlight: 'bg-slate-200',
-                font: 'font-modern'
-            },
-            republican: {
-                bg: 'bg-[#1e293b]',
-                text: 'text-[#f8fafc]',
-                card: 'bg-[#0f172a]',
-                border: 'border-slate-700',
-                highlight: 'bg-slate-800',
-                font: 'font-modern'
-            }
-        },
-
-        // Phasenkonfiguration (Regeln, Buttons & Musik)
+        // Phasenkonfiguration (Regeln & Musik)
         phases: {
             '2': {
                 theme: 'qing',
-                music: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3', // Temporärer Platzhalter für Erhu/Guzheng
-                btnActive: 'bg-[#8b7355] text-white border-[#8b7355]',
-                btnInactive: 'bg-transparent text-[#8b7355] border-[#8b7355] hover:bg-[#8b7355] hover:text-white',
+                music: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3',
                 rules: [
                     'Gelbe Schienenteile sind erlaubt.',
                     'Schmalspur-Minors dürfen Strecken bauen.',
@@ -58,8 +28,6 @@ function gameCompanion() {
             '4': {
                 theme: 'industrial',
                 music: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3',
-                btnActive: 'bg-emerald-700 text-white border-emerald-700',
-                btnInactive: 'bg-transparent text-emerald-700 border-emerald-700 hover:bg-emerald-700 hover:text-white',
                 rules: [
                     'Grüne Upgrades sind ab sofort freigeschaltet.',
                     'Ausländische Investoren (Foreign Investors) verändern ihr Verhalten.',
@@ -67,10 +35,8 @@ function gameCompanion() {
                 ]
             },
             '6': {
-                theme: 'republican',
+                theme: 'industrial', // Teilt sich das saubere graue Design
                 music: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3',
-                btnActive: 'bg-blue-600 text-white border-blue-600',
-                btnInactive: 'bg-transparent text-blue-600 border-blue-600 hover:bg-blue-600 hover:text-white',
                 rules: [
                     'Braune Streckenteile dürfen verbaut werden.',
                     'Regierungszüge (G-Trains) kommen auf den Markt.',
@@ -78,21 +44,13 @@ function gameCompanion() {
                 ]
             },
             'E': {
-                theme: 'republican', // Nutzt das dunkle Industrial-Design für die Moderne
+                theme: 'modern', // Wechselt in das dunkle, neonfarbene Zukunfts-Design
                 music: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-8.mp3',
-                btnActive: 'bg-indigo-600 text-white border-indigo-600',
-                btnInactive: 'bg-transparent text-indigo-600 border-indigo-600 hover:bg-indigo-600 hover:text-white',
                 rules: [
                     'Graue finale Upgrades (Magnetschwebebahn/Modern) sind offen.',
                     '⚠️ Züge vom Typ 4 werden sofort obsolet!'
                 ]
             }
-        },
-
-        // Gibt das aktuell aktive CSS-Designpaket zurück
-        get currentTheme() {
-            const currentPhaseData = this.phases[this.activePhase];
-            return this.themes[currentPhaseData.theme];
         },
 
         // Berechnet die Summe aller eingetragenen Aktienwerte
@@ -109,9 +67,8 @@ function gameCompanion() {
             const audio = document.getElementById('bg-audio');
             if (audio && config.music) {
                 audio.src = config.music;
-                audio.volume = 0.3; // Angenehme Hintergrundlautstärke
-                // play() erfordert oft eine Nutzerinteraktion auf der Website vorab
-                audio.play().catch(e => console.log("Audio-Autoplay blockiert. Warte auf Klick."));
+                audio.volume = 0.2;
+                audio.play().catch(e => console.log("Audio-Autoplay erfordert Klick auf der Seite."));
             }
         },
 
