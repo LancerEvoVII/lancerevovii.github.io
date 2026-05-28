@@ -4,25 +4,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>1880: China – Kaiserlicher Bahn-Begleiter</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Noto+Serif+SC:wght@300;600&display=swap" rel="stylesheet">
     
     <style>
         /* --- EDLES THEMING & LAYOUT FÜR 1880: CHINA --- */
         * { 
             box-sizing: border-box; 
-            transition: background-color 0.6s cubic-bezier(0.4, 0, 0.2, 1), 
-                        color 0.4s ease, 
-                        border-color 0.4s ease, 
-                        transform 0.2s ease,
-                        box-shadow 0.4s ease; 
+            transition: background-color 0.4s ease, color 0.3s ease, border-color 0.3s ease;
         }
 
         body {
             margin: 0;
             padding: 40px 20px;
-            font-family: 'Noto Serif SC', Georgia, serif;
+            font-family: Georgia, serif;
             min-height: 100vh;
             display: flex;
             flex-direction: column;
@@ -45,15 +38,15 @@
         /* Ära 1: Kaiserliches China (Warmes, historisches Manuskript-Design) */
         body[data-theme="2"] { background-color: #f5eedc; color: #2e2516; }
         body[data-theme="2"] .card { background: #fdfbf7; border: 2px solid #8b7355; border-radius: 4px; box-shadow: 0 8px 20px rgba(139,115,85,0.15); }
-        body[data-theme="2"] .card h2 { font-family: 'Cinzel', serif; color: #722f1d; border-bottom: 2px solid #8b7355; }
+        body[data-theme="2"] .card h2 { color: #722f1d; border-bottom: 2px solid #8b7355; font-family: Georgia, serif; font-weight: bold; }
         body[data-theme="2"] button.phase-btn[data-active="true"] { background: #722f1d; color: #f5eedc; box-shadow: 0 4px 10px rgba(114,47,29,0.3); }
         body[data-theme="2"] .badge, body[data-theme="2"] .results-box { background: #eaddbd; border-left: 4px solid #722f1d; color: #4e1d11; }
-        body[data-theme="2"] select, body[data-theme="2"] input { border: 1px solid #8b7355; background: #fffcf7; font-family: inherit; color: #2e2516; }
+        body[data-theme="2"] select, body[data-theme="2"] input { border: 1px solid #8b7355; background: #fffcf7; color: #2e2516; }
 
         /* Ära 2: Industrialisierung & Republik (Kühleres, strukturiertes Grau-Grün) */
         body[data-theme="4"], body[data-theme="6"] { background-color: #e6ecf2; color: #1e293b; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
         body[data-theme="4"] .card, body[data-theme="6"] .card { background: #ffffff; border: 1px solid #94a3b8; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.05); }
-        body[data-theme="4"] .card h2, body[data-theme="6"] .card h2 { font-family: sans-serif; color: #0f172a; border-bottom: 1px solid #cbd5e1; font-weight: 700; }
+        body[data-theme="4"] .card h2, body[data-theme="6"] .card h2 { color: #0f172a; border-bottom: 1px solid #cbd5e1; font-weight: 700; font-family: -apple-system, sans-serif; }
         body[data-theme="4"] button.phase-btn[data-active="true"] { background: #059669; color: #ffffff; border-radius: 8px; box-shadow: 0 4px 10px rgba(5,150,105,0.25); }
         body[data-theme="6"] button.phase-btn[data-active="true"] { background: #0284c7; color: #ffffff; border-radius: 8px; box-shadow: 0 4px 10px rgba(2,132,199,0.25); }
         body[data-theme="4"] .badge, body[data-theme="4"] .results-box, body[data-theme="6"] .badge, body[data-theme="6"] .results-box { background: #f1f5f9; border-left: 4px solid #64748b; color: #1e293b; }
@@ -63,7 +56,7 @@
         body[data-theme="E"] { background-color: #0b0f19; color: #e2e8f0; font-family: -apple-system, BlinkMacSystemFont, sans-serif; }
         body[data-theme="E"] .top-ornament { background: #3b82f6; }
         body[data-theme="E"] .card { background: #131c2e; border: 1px solid #1e293b; border-radius: 16px; box-shadow: 0 15px 30px rgba(0,0,0,0.3); }
-        body[data-theme="E"] .card h2 { color: #ffffff; border-bottom: 1px solid #1e293b; letter-spacing: 0.05em; font-weight: 700; }
+        body[data-theme="E"] .card h2 { color: #ffffff; border-bottom: 1px solid #1e293b; letter-spacing: 0.05em; font-weight: 700; font-family: -apple-system, sans-serif; }
         body[data-theme="E"] button.phase-btn[data-active="true"] { background: #3b82f6; color: #ffffff; border-radius: 20px; box-shadow: 0 0 15px rgba(59,130,246,0.4); }
         body[data-theme="E"] .badge, body[data-theme="E"] .results-box { background: #1e293b; border-left: 4px solid #3b82f6; color: #f8fafc; }
         body[data-theme="E"] select, body[data-theme="E"] input { border: 1px solid #334155; background: #0b0f19; border-radius: 8px; color: #e2e8f0; }
@@ -71,7 +64,7 @@
         /* --- STRUKTUR & LAYOUT --- */
         .wrapper { width: 100%; max-width: 1100px; flex-grow: 1; z-index: 2; }
         header { text-align: center; margin-bottom: 35px; }
-        h1 { margin: 10px 0 5px 0; font-size: 3rem; font-weight: 800; font-family: 'Cinzel', serif; letter-spacing: 2px; text-transform: uppercase; }
+        h1 { margin: 10px 0 5px 0; font-size: 2.8rem; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; }
         .subtitle { font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.2em; font-weight: 600; opacity: 0.5; }
 
         /* Phasen-Leiste */
@@ -262,10 +255,9 @@
     <audio id="bg-audio" loop></audio>
 
     <script>
-        // Detaillierte historische Regelsätze und Musik-Zuweisung
         const phaseData = {
             '2': {
-                music: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3', // HIER DEINEN MP3-LINK REINKOPIEREN
+                music: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3', // HIER MP3-LINK REIN
                 rules: [
                     '🚄 Permittierte Strecken: Es dürfen ausschließlich gelbe (Basis-)Schienenteile verbaut werden.',
                     '🪙 Schmalspur-Minors: Die kleinen Schmalspurbahnen erwachen zum Leben und dürfen Schienen legen.',
@@ -274,7 +266,7 @@
                 ]
             },
             '4': {
-                music: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3', // HIER DEINEN MP3-LINK REINKOPIEREN
+                music: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3', // HIER MP3-LINK REIN
                 rules: [
                     '🟢 Ausbauphase: Grüne Schienen-Upgrades sind ab sofort für alle Gesellschaften freigeschaltet.',
                     '🤝 Ausländische Investoren: Das Verhalten der Foreign Investors ändert sich drastisch gem. Regelbuch Kapitel 7.',
@@ -283,7 +275,7 @@
                 ]
             },
             '6': {
-                music: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3', // HIER DEINEN MP3-LINK REINKOPIEREN
+                music: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3', // HIER MP3-LINK REIN
                 rules: [
                     '🟤 Fortgeschrittenes Netz: Komplexe braune Streckenteile dürfen ab sofort über bestehende Verbindungen gelegt werden.',
                     '🏛️ Staatsintervention: Die mächtigen Regierungszüge (G-Trains) betreten den Markt.',
@@ -292,7 +284,7 @@
                 ]
             },
             'E': {
-                music: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-8.mp3', // HIER DEINEN MP3-LINK REINKOPIEREN
+                music: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-8.mp3', // HIER MP3-LINK REIN
                 rules: [
                     '🚄 Magnetschwebebahn (Maglev): Die finalen grauen Upgrades und die High-Tech-Sektoren sind offen.',
                     '⚠️ Sofortiger Rost: Züge vom Typ 4 rosten per sofort und werden ohne Übergangsfrist aus dem Spiel entfernt!',
@@ -301,24 +293,19 @@
             }
         };
 
-        // Event-Listeners binden (Sicherer Schutz gegen GitHub CSP Blockaden)
         document.addEventListener('DOMContentLoaded', () => {
-            // Phasen-Buttons aktivieren
             ['2', '4', '6', 'E'].forEach(p => {
                 document.getElementById('btn-' + p).addEventListener('click', () => changePhase(p));
             });
 
-            // Inputs überwachen
             document.getElementById('players').addEventListener('change', runSetupCheck);
             ['p1', 'p2', 'p3', 'treasury'].forEach(id => {
                 document.getElementById('share-' + id).addEventListener('input', countShares);
             });
 
-            // Rechner-Buttons aktivieren
             document.getElementById('btn-action-pay').addEventListener('click', () => runPayout(true));
             document.getElementById('btn-action-withhold').addEventListener('click', () => runPayout(false));
 
-            // Initiale Phase laden
             changePhase('2');
         });
 
@@ -327,7 +314,6 @@
             document.querySelectorAll('.phase-btn').forEach(btn => btn.setAttribute('data-active', 'false'));
             document.getElementById('btn-' + phaseKey).setAttribute('data-active', 'true');
             
-            // Regeln austauschen
             const rulesOutput = document.getElementById('rules-output');
             rulesOutput.innerHTML = '';
             phaseData[phaseKey].rules.forEach(rule => {
@@ -336,13 +322,12 @@
                 rulesOutput.appendChild(li);
             });
 
-            // Audio ansteuern
             const audio = document.getElementById('bg-audio');
             if (audio && phaseData[phaseKey].music) {
                 audio.src = phaseData[phaseKey].music;
                 audio.volume = 0.2; 
                 audio.play().catch(() => {
-                    console.log("Audio-Wiedergabe wartet auf die erste Interaktion auf der Seite.");
+                    console.log("Audio-Wiedergabe wartet auf Klick.");
                 });
             }
         }
