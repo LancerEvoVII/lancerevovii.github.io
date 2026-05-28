@@ -3,273 +3,232 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>1880: China – Neon-Kaiserreich Kontrollzentrum</title>
+    <title>1880: China – Betriebs-Assistent</title>
     
     <style>
-        /* --- RADIKALES CYBER-DYNASTIE THEMING --- */
+        /* --- SUBTILES, REINES UND FUNKTIONALES STYLING --- */
         * { 
             box-sizing: border-box; 
-            transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
-        }
-
-        body::before {
-            content: " ";
-            display: block;
-            position: fixed;
-            top: 0; left: 0; bottom: 0; right: 0;
-            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
-            z-index: 9999;
-            background-size: 100% 4px, 6px 100%;
-            pointer-events: none;
+            transition: background-color 0.3s, border-color 0.3s, color 0.3s;
         }
 
         body {
             margin: 0;
             padding: 40px 20px;
-            background-color: #05070b;
-            color: #c5cedb;
-            font-family: 'Courier New', Courier, monospace;
-            min-height: 100vh;
+            background-color: #f4f5f7;
+            color: #333333;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            line-height: 1.5;
             display: flex;
             flex-direction: column;
             align-items: center;
         }
 
-        .top-ornament {
-            position: absolute;
-            top: 0; left: 0; right: 0;
-            height: 6px;
-            background: #ff2a5f;
-            box-shadow: 0 0 20px #ff2a5f, 0 0 40px #ff2a5f;
-            z-index: 10;
-            animation: pulse-laser 2s infinite alternate;
+        /* --- THEMEN-PALETTEN (KREATIV ABER BALANCIERT) --- */
+        /* Ära 2: Kaiserliche Qing-Dynastie (Tiefrot & Gold-Nuancen) */
+        body[data-theme="2"] { background-color: #fcf9f5; --primary: #8a1c14; --accent: #d4af37; --bg-card: #ffffff; --text: #333; }
+        body[data-theme="2"] h1 { color: #8a1c14; }
+
+        /* Ära 4: Industrialisierung (Maschinen-Grau & Eisen) */
+        body[data-theme="4"] { background-color: #f0f2f5; --primary: #4a5568; --accent: #dd6b20; --bg-card: #ffffff; --text: #2d3748; }
+        body[data-theme="4"] h1 { color: #2d3748; }
+
+        /* Ära 6: Republik & Kommunismus (Klassisches Revolutions-Rot) */
+        body[data-theme="6"] { background-color: #fdf2f2; --primary: #c53030; --accent: #9b2c2c; --bg-card: #ffffff; --text: #1a202c; }
+        body[data-theme="6"] h1 { color: #c53030; }
+
+        /* Ära E: Die Moderne (Minimalistisches High-Tech) */
+        body[data-theme="E"] { background-color: #f7fafc; --primary: #2b6cb0; --accent: #319795; --bg-card: #ffffff; --text: #2d3748; }
+        body[data-theme="E"] h1 { color: #2b6cb0; }
+
+        /* --- HARTER ÜBERSCHREIB-MODUS BEI AKTIVEM KOMMUNISMUS --- */
+        body[data-communist="true"] { 
+            background-color: #fef2f2 !important; 
+            --primary: #9b2c2c !important; 
+            --accent: #e53e3e !important;
         }
 
-        @keyframes pulse-laser {
-            0% { opacity: 0.6; box-shadow: 0 0 10px #ff2a5f; }
-            100% { opacity: 1; box-shadow: 0 0 25px #ff2a5f, 0 0 50px #ff2a5f; }
-        }
-
-        /* --- EPOCHEN-STILE (THEMES) --- */
-        body[data-theme="2"] { --neon: #ff2a5f; --bg-card: #0f0a0d; --border: #ff2a5f; --accent: #ffb703; }
-        body[data-theme="2"] h1 { color: #ff2a5f; text-shadow: 0 0 15px #ff2a5f; }
-
-        body[data-theme="4"] { --neon: #00f5d4; --bg-card: #050f0e; --border: #00f5d4; --accent: #00bbf9; }
-        body[data-theme="4"] h1 { color: #00f5d4; text-shadow: 0 0 15px #00f5d4; }
-
-        body[data-theme="6"] { --neon: #00bbf9; --bg-card: #040d14; --border: #00bbf9; --accent: #f15bb5; }
-        body[data-theme="6"] h1 { color: #00bbf9; text-shadow: 0 0 15px #00bbf9; }
-
-        body[data-theme="E"] { --neon: #9b5de5; --bg-card: #0b0512; --border: #9b5de5; --accent: #f15bb5; }
-        body[data-theme="E"] h1 { color: #9b5de5; text-shadow: 0 0 15px #9b5de5; }
-
-        /* --- RED REVOLUTION STATE --- */
-        body[data-communist="true"] {
-            --neon: #ff0000 !important;
-            --border: #ff0000 !important;
-            --accent: #ffcc00 !important;
-        }
-
-        .wrapper { width: 100%; max-width: 1200px; z-index: 2; }
-        header { text-align: center; margin-bottom: 40px; }
+        .wrapper { width: 100%; max-width: 1100px; }
+        header { text-align: center; margin-bottom: 35px; }
         
-        h1 { margin: 15px 0 5px 0; font-size: 3.5rem; font-weight: 900; letter-spacing: 4px; text-transform: uppercase; }
-        .subtitle { font-size: 0.9rem; text-transform: uppercase; letter-spacing: 0.4em; color: #6272a4; font-weight: bold; }
+        h1 { margin: 0 0 10px 0; font-size: 2.5rem; font-weight: 700; letter-spacing: -0.5px; }
+        .subtitle { font-size: 0.85rem; text-transform: uppercase; letter-spacing: 2px; color: #718096; font-weight: 600; }
 
+        /* Phasen-Schalter */
         .nav-container { 
             display: flex; 
             justify-content: center; 
-            background: #121620; 
-            padding: 8px; 
-            border-radius: 0px; 
-            margin-top: 30px; 
-            gap: 10px; 
-            border: 2px dashed #282a36;
+            background: #eddcd2; 
+            padding: 6px; 
+            border-radius: 8px; 
+            margin-top: 25px; 
+            gap: 5px;
+            background-color: rgba(0,0,0,0.05);
         }
 
         .phase-btn { 
-            background: #1a1f2c; 
-            border: 1px solid #282a36; 
-            padding: 12px 20px; 
+            background: transparent; 
+            border: none;
+            padding: 10px 18px; 
             cursor: pointer; 
-            color: #6272a4; 
+            color: #4a5568; 
             display: flex; 
             flex-direction: column; 
             align-items: center; 
-            min-width: 150px;
+            min-width: 130px;
             font-family: inherit;
+            border-radius: 6px;
+            font-weight: 500;
         }
-        .phase-btn:hover { background: #282a36; color: #fff; }
+        .phase-btn:hover { background-color: rgba(0,0,0,0.03); }
         .phase-btn[data-active="true"] { 
             background: var(--bg-card); 
-            color: #fff; 
-            border: 1px solid var(--border); 
-            box-shadow: inset 0 0 10px var(--neon), 0 0 15px var(--neon);
+            color: var(--primary); 
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            font-weight: 700;
         }
-        .btn-era { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px; opacity: 0.7; }
-        .btn-ph { font-size: 1.1rem; font-weight: 900; }
+        .btn-era { font-size: 0.65rem; text-transform: uppercase; opacity: 0.8; margin-bottom: 2px; }
+        .btn-ph { font-size: 1rem; }
 
-        /* REVOLUTIONS-SCHALTER PANELS */
+        /* Kommunismus-Hebel Panel */
         .revolution-panel {
             margin-top: 20px;
-            padding: 15px;
-            background: #110507;
-            border: 2px solid #ff0033;
+            padding: 12px 20px;
+            background: #fff;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            box-shadow: 0 0 15px rgba(255, 0, 51, 0.2);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.02);
         }
-        .rev-title { font-weight: bold; color: #ff0033; font-size: 0.9rem; letter-spacing: 1px; }
-        .rev-switch {
-            display: inline-block;
-            position: relative;
-            width: 140px;
-            height: 35px;
-        }
+        .rev-title { font-weight: 600; color: #4a5568; font-size: 0.9rem; }
+        body[data-communist="true"] .rev-title { color: #c53030; }
+        
+        .rev-switch { display: inline-block; position: relative; width: 130px; height: 32px; }
         .rev-switch input { opacity: 0; width: 0; height: 0; }
         .slider {
             position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0;
-            background-color: #222; border: 1px solid #ff0033;
+            background-color: #e2e8f0; border-radius: 20px;
             display: flex; align-items: center; justify-content: center;
-            font-size: 0.75rem; font-weight: bold; color: #666;
+            font-size: 0.75rem; font-weight: bold; color: #718096;
         }
-        .slider::before {
-            content: "DEAKTIVIERT"; color: #ff0033;
-        }
-        input:checked + .slider {
-            background-color: #ff0033; color: #000;
-            box-shadow: 0 0 15px #ff0033;
-        }
-        input:checked + .slider::before {
-            content: "⚠️ SYSTEM XIV ACTIVE"; color: #000;
-        }
+        .slider::before { content: "INAKTIV"; }
+        input:checked + .slider { background-color: #c53030; color: #fff; }
+        input:checked + .slider::before { content: "⚠️ KAPITEL XIV"; }
 
-        .grid { display: grid; grid-template-columns: 1fr; gap: 30px; margin-top: 20px; }
-        @media (min-width: 900px) { .grid { grid-template-columns: 1fr 1fr; } }
+        /* Grid & Cards */
+        .grid { display: grid; grid-template-columns: 1fr; gap: 25px; margin-top: 25px; }
+        @media (min-width: 850px) { .grid { grid-template-columns: 1fr 1fr; } }
         
         .card { 
             background: var(--bg-card); 
-            border: 2px solid var(--border); 
-            padding: 30px; 
-            box-shadow: 0 0 20px rgba(0,0,0,0.7), inset 0 0 15px rgba(0,0,0,0.5);
+            border: 1px solid #e2e8f0;
+            border-top: 4px solid var(--primary);
+            border-radius: 8px;
+            padding: 25px; 
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
             position: relative;
-        }
-        .card::before {
-            content: ""; position: absolute; top: -2px; left: -2px; width: 15px; height: 15px; border-top: 4px solid var(--accent); border-left: 4px solid var(--accent);
-        }
-        .card::after {
-            content: ""; position: absolute; bottom: -2px; right: -2px; width: 15px; height: 15px; border-bottom: 4px solid var(--accent); border-right: 4px solid var(--accent);
         }
 
         .card h2 { 
-            margin-top: 0; font-size: 1.4rem; padding-bottom: 15px; margin-bottom: 25px; 
-            color: #fff; border-bottom: 1px dashed var(--border); text-transform: uppercase; letter-spacing: 1px;
+            margin-top: 0; font-size: 1.15rem; padding-bottom: 12px; margin-bottom: 20px; 
+            color: var(--primary); border-bottom: 1px solid #edf2f7; text-transform: uppercase; letter-spacing: 0.5px;
         }
 
-        .form-group { margin-bottom: 25px; }
-        .form-group label { display: block; font-size: 0.8rem; text-transform: uppercase; font-weight: bold; margin-bottom: 10px; color: var(--accent); letter-spacing: 1px; }
+        .form-group { margin-bottom: 20px; }
+        .form-group label { display: block; font-size: 0.75rem; text-transform: uppercase; font-weight: 700; margin-bottom: 8px; color: #718096; }
         
         select, input { 
-            width: 100%; padding: 12px 15px; font-size: 1rem; background: #000; border: 1px solid #282a36; 
-            color: #fff; font-family: inherit; outline: none;
+            width: 100%; padding: 10px 14px; font-size: 0.95rem; background: #fafafa; border: 1px solid #e2e8f0; 
+            color: var(--text); font-family: inherit; outline: none; border-radius: 6px;
         }
-        select:focus, input:focus {
-            border-color: var(--border);
-            box-shadow: 0 0 10px var(--neon);
-        }
+        select:focus, input:focus { border-color: var(--primary); background: #fff; }
 
         .collapsible { max-height: 0; overflow: hidden; opacity: 0; }
-        .collapsible.show { max-height: 1000px; opacity: 1; margin-top: 25px; }
+        .collapsible.show { max-height: 1000px; opacity: 1; margin-top: 20px; }
 
         .badge { 
-            padding: 15px; text-align: center; font-weight: bold; font-size: 1.1rem; 
-            background: #000; border: 1px solid var(--border); color: var(--accent);
-            box-shadow: 0 0 10px rgba(0,0,0,0.5); margin-bottom: 25px; 
+            padding: 12px; text-align: center; font-weight: 700; font-size: 1rem; border-radius: 6px;
+            background: #fafafa; border: 1px solid #e2e8f0; color: var(--primary); margin-bottom: 20px; 
         }
 
         .checklist { list-style: none; padding: 0; margin: 0; }
-        .checklist li { display: flex; gap: 15px; margin-bottom: 18px; font-size: 0.85rem; line-height: 1.6; border-left: 2px solid #282a36; padding-left: 10px; }
+        .checklist li { display: flex; gap: 12px; margin-bottom: 14px; font-size: 0.85rem; line-height: 1.5; color: #4a5568; }
         .checklist input[type="checkbox"] { 
-            width: 18px; height: 18px; appearance: none; border: 2px solid var(--border); background: #000; cursor: pointer; position: relative;
-        }
-        .checklist input[type="checkbox"]:checked::before {
-            content: "✕"; position: absolute; top: -2px; left: 2px; color: var(--accent); font-weight: bold; font-size: 14px;
+            width: 16px; height: 16px; margin-top: 2px; accent-color: var(--primary); cursor: pointer;
         }
 
-        .rules-list { padding-left: 0; list-style: none; margin: 0; font-size: 0.9rem; line-height: 1.7; }
-        .rules-list li { margin-bottom: 15px; padding: 10px; background: rgba(0,0,0,0.4); border-left: 3px solid var(--border); }
+        .rules-list { padding-left: 0; list-style: none; margin: 0; font-size: 0.85rem; line-height: 1.6; }
+        .rules-list li { margin-bottom: 12px; padding: 10px 12px; background: #fafafa; border-left: 3px solid var(--primary); border-radius: 0 6px 6px 0; }
 
         .info-note { 
-            padding: 15px; font-size: 0.8rem; background: #120a0d; border: 1px solid #ff2a5f; color: #ff2a5f; margin-top: 25px; line-height: 1.6; 
+            padding: 12px; font-size: 0.8rem; background: #fffaf0; border: 1px solid #feebc8; color: #dd6b20; border-radius: 6px; margin-top: 20px; 
         }
 
-        /* Ledger-Matrix */
-        .share-box { padding: 20px; background: rgba(0,0,0,0.5); border: 1px solid #282a36; margin-bottom: 25px; position: relative;}
-        .share-box-title { display: block; font-size: 0.8rem; font-weight: bold; text-transform: uppercase; color: var(--accent); margin-bottom: 20px; }
-        .share-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; font-size: 0.9rem; }
-        .share-row input { width: 90px; text-align: center; padding: 8px; font-weight: bold; border-color: var(--border); }
-        .counter-text { text-align: right; font-size: 0.8rem; font-weight: bold; margin-top: 15px; }
+        /* Ledger */
+        .share-box { padding: 15px; background: #fafafa; border: 1px solid #e2e8f0; border-radius: 6px; margin-bottom: 20px; position: relative;}
+        .share-box-title { display: block; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; color: #718096; margin-bottom: 15px; }
+        .share-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; font-size: 0.9rem; }
+        .share-row input { width: 80px; text-align: center; padding: 6px; border-radius: 4px; }
+        .counter-text { text-align: right; font-size: 0.8rem; font-weight: 700; margin-top: 10px; }
 
-        /* Glühender Warn-Badge für den Markt-Freeze */
+        /* Subtiler Freeze-Overlay statt fettem Rot */
         .market-freeze-overlay {
             display: none; position: absolute; top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(20, 0, 0, 0.9); border: 2px dashed #ff0000;
+            background: rgba(255, 255, 255, 0.9); border-radius: 6px;
             align-items: center; justify-content: center; text-align: center;
-            padding: 20px; z-index: 10; color: #ff0000; font-weight: bold;
-            box-shadow: inset 0 0 30px #ff0000;
+            padding: 15px; z-index: 10; color: #c53030; font-weight: 600; font-size: 0.85rem;
         }
         body[data-communist="true"] .market-freeze-overlay { display: flex; }
 
-        /* Cyber-Buttons */
-        .btn-group { display: flex; gap: 15px; }
+        /* Buttons */
+        .btn-group { display: flex; gap: 12px; }
         .btn { 
-            flex: 1; padding: 16px; border: none; font-weight: bold; color: #000; cursor: pointer; 
-            text-transform: uppercase; font-size: 0.9rem; letter-spacing: 1px; font-family: inherit;
+            flex: 1; padding: 12px; border: none; font-weight: 600; cursor: pointer; border-radius: 6px;
+            text-transform: uppercase; font-size: 0.8rem; letter-spacing: 0.5px; font-family: inherit;
         }
-        .btn-pay { background: var(--border); color: #000; box-shadow: 0 0 15px var(--neon); }
-        .btn-withhold { background: transparent; color: var(--border); border: 2px solid var(--border); }
-        .btn:hover { filter: brightness(1.2); box-shadow: 0 0 25px var(--neon); }
+        .btn-pay { background: var(--primary); color: #fff; }
+        .btn-withhold { background: transparent; color: var(--primary); border: 1px solid var(--primary); }
+        .btn:hover { opacity: 0.9; }
 
-        .results-box { padding: 20px; background: #000; border: 1px dashed var(--border); }
-        .results-box h4 { margin: 0 0 15px 0; text-transform: uppercase; font-size: 0.8rem; color: var(--accent); }
-        .results-box ul { padding-left: 0; list-style: none; margin: 0; font-size: 0.85rem; line-height: 1.7; }
-        .results-box li { margin-bottom: 10px; padding: 8px; background: rgba(255,255,255,0.03); }
+        .results-box { padding: 15px; background: #fafafa; border: 1px dashed #e2e8f0; border-radius: 6px; }
+        .results-box h4 { margin: 0 0 10px 0; text-transform: uppercase; font-size: 0.75rem; color: #718096; }
+        .results-box ul { padding-left: 0; list-style: none; margin: 0; font-size: 0.85rem; line-height: 1.6; }
+        .results-box li { margin-bottom: 8px; padding: 6px 10px; background: #fff; border: 1px solid #edf2f7; border-radius: 4px; }
 
-        footer { text-align: center; font-size: 0.7rem; color: #282a36; margin-top: 60px; padding-top: 20px; border-top: 1px dashed #282a36; width: 100%; }
+        footer { text-align: center; font-size: 0.75rem; color: #a0aec0; margin-top: 50px; padding-top: 20px; border-top: 1px dashed #e2e8f0; width: 100%; }
     </style>
 </head>
 <body data-theme="2" data-communist="false">
 
-    <div class="top-ornament"></div>
-
     <div class="wrapper">
         <header>
             <h1>1880: China</h1>
-            <div class="subtitle">=== NEON DYNASTY PROTOCOL RECON ===</div>
+            <div class="subtitle">Operations- & Setup-Zentrale</div>
             
             <div class="nav-container">
                 <button class="phase-btn" id="btn-2" data-active="true">
-                    <span class="btn-era">Qing Cyber-Core</span>
-                    <span class="btn-ph">SYSTEM 2</span>
+                    <span class="btn-era">Kaiserreich</span>
+                    <span class="btn-ph">Phase 2</span>
                 </button>
                 <button class="phase-btn" id="btn-4" data-active="false">
-                    <span class="btn-era">Heavy Industrial</span>
-                    <span class="btn-ph">SYSTEM 4</span>
+                    <span class="btn-era">Industrialisierung</span>
+                    <span class="btn-ph">Phase 4</span>
                 </button>
                 <button class="phase-btn" id="btn-6" data-active="false">
-                    <span class="btn-era">Republic Net</span>
-                    <span class="btn-ph">SYSTEM 6</span>
+                    <span class="btn-era">Republik-Ära</span>
+                    <span class="btn-ph">Phase 6</span>
                 </button>
                 <button class="phase-btn" id="btn-E" data-active="false">
-                    <span class="btn-era">Neo-Modern Era</span>
-                    <span class="btn-ph">SYSTEM E</span>
+                    <span class="btn-era">Moderne</span>
+                    <span class="btn-ph">Phase E</span>
                 </button>
             </div>
 
             <!-- XIV. COMMUNIST TAKEOVER INTERFACE -->
             <div class="revolution-panel">
-                <span class="rev-title">⚠️ XIV. COMMUNIST TAKEOVER (1949 PROTOCOL):</span>
+                <span class="rev-title">Kapitel XIV: Kommunistische Übernahme (1949 Protokoll)</span>
                 <label class="rev-switch">
                     <input type="checkbox" id="communist-toggle">
                     <span class="slider"></span>
@@ -278,80 +237,76 @@
         </header>
 
         <main class="grid">
-            <!-- RECHNER & LOGISTIK -->
             <div class="card">
-                <h2>[🏮] SYSTEM-SETUP & LOGS</h2>
+                <h2>[⚙️] Setup & Logistik-Protokoll</h2>
                 <div class="form-group">
-                    <label for="players">Gouverneure verifizieren:</label>
+                    <label for="players">Anzahl der Gouverneure:</label>
                     <select id="players">
-                        <option value="0">// WAITING FOR DATA...</option>
-                        <option value="3">3 GOUVERNEURE</option>
-                        <option value="4">4 GOUVERNEURE</option>
-                        <option value="5">5 GOUVERNEURE</option>
-                        <option value="6">6 GOUVERNEURE</option>
-                        <option value="7">7 GOUVERNEURE</option>
+                        <option value="0">Bitte wählen...</option>
+                        <option value="3">3 Spieler</option>
+                        <option value="4">4 Spieler</option>
+                        <option value="5">5 Spieler</option>
+                        <option value="6">6 Spieler</option>
+                        <option value="7">7 Spieler</option>
                     </select>
                 </div>
 
                 <div id="setup-collapse" class="collapsible">
-                    <div class="badge" id="cash-badge">CREDITS: ¥ 0</div>
+                    <div class="badge" id="cash-badge">Startkapital: ¥ 0</div>
                     <ul class="checklist">
-                        <li><input type="checkbox"> <div><strong>BARBESTAND:</strong> Startguthaben komplett an Befehlshaber auszahlen. Rest sichert die Hauptbank.</div></li>
-                        <li><input type="checkbox"> <div><strong>PRIVAT-PROTOKOLLE (P0–P7):</strong> Markt-Einspeisung numerisch aufschalten.</div></li>
-                        <li><input type="checkbox"> <div><strong>ZERTIFIKATS-MATRIX:</strong> 10%-Tranchen stapeln: Unten fünf 10%-Module, Par-Zertifikat, drei 10%-Module, oben 30%-Direktoren-Kern.</div></li>
-                        <li><input type="checkbox"> <div id="checklist-turn-cards">Reihenfolge-Vektoren initialisieren.</div></li>
+                        <li><input type="checkbox"> <div><strong>Barbestand:</strong> Startguthaben an die Spieler auszahlen. Der Rest bildet die Hauptbank.</div></li>
+                        <li><input type="checkbox"> <div><strong>Private Verträge (P0–P7):</strong> Gemäß Spieleranzahl in den offenen Markt einspeisen.</div></li>
+                        <li><input type="checkbox"> <div><strong>Zertifikats-Stapel:</strong> 10%-Tranchen präzise schichten: Unten fünf 10%-Karten, Par-Zertifikat, drei 10%-Karten, oben der 30%-Direktorenanteil.</div></li>
+                        <li><input type="checkbox"> <div id="checklist-turn-cards">Reihenfolge-Karten bereitlegen.</div></li>
                     </ul>
                 </div>
             </div>
 
             <div class="card">
-                <h2>[📜] KAISERLICHE ERST-DIREKTIVEN</h2>
+                <h2>[📜] Aktuelle Direktiven & Phasenregeln</h2>
                 <ul class="rules-list" id="rules-output"></ul>
                 <div class="info-note" id="market-warning-box">
-                    <strong>[CRITICAL WARNING] P0 & P1 MARKTDRUCK:</strong> Bleiben Datenblöcke unberührt, System-Wert-Kompression um ¥ 5. Bei ¥ 0 erfolgt Zwangs-Injektion beim nächsten Operator!
+                    <strong>P0 & P1 Marktdruck:</strong> Werden sie nicht gekauft, sinkt der Wert in jeder Runde um ¥ 5. Bei ¥ 0 muss der nächste Spieler sie zwangsweise nehmen!
                 </div>
             </div>
 
             <div class="card" style="grid-column: 1 / -1;">
-                <h2>[⚖️] RECHEN-MATRIX: ERTRAGSBUCH</h2>
+                <h2>[📊] Ertragsrechner (Ausschüttungen)</h2>
                 <div class="form-group">
-                    <label>ROUTEN-NETZWERK-ERTRAG DER GESELLSCHAFT (OR):</label>
-                    <input type="number" id="revenue" placeholder="SPEISEWERT EINGEBEN (z.B. 420)" step="10">
+                    <label>Gesamter Routenwert der Gesellschaft (OR):</label>
+                    <input type="number" id="revenue" placeholder="z.B. 350" step="10">
                 </div>
 
                 <div class="share-box">
-                    <!-- BLOCKADE BEI AKTIVIERTER ÜBERNAHME -->
                     <div class="market-freeze-overlay">
                         <div>
-                            💥 STOCK MARKET FROZEN 💥<br>
-                            <span style="font-size: 0.75rem; font-weight: normal; letter-spacing: 0px;">
-                                Gemäß Dekret XIV: Keine Kursänderungen in SR/OR.<br>
-                                Verkauf von Direktoren-Zertifikaten absolut blockiert!
-                            </span>
+                            <strong>Aktienmarkt eingefroren (Dekret XIV)</strong><br>
+                            Keine Kursbewegungen in SR/OR. Verkauf von Direktoren-Zertifikaten blockiert!
                         </div>
                     </div>
 
-                    <span class="share-box-title">// ABSOLUTE 100%-KONTROLLE DER AKTIEN-KNOTEN</span>
-                    <div class="share-row"><span>DIREKTOR INTERFACE (P1):</span><div><input type="number" id="share-p1" value="0" step="10"> %</div></div>
-                    <div class="share-row"><span>AKTIONÄR KNOTEN B (P2):</span><div><input type="number" id="share-p2" value="0" step="10"> %</div></div>
-                    <div class="share-row"><span>AKTIONÄR KNOTEN C (P3):</span><div><input type="number" id="share-p3" value="0" step="10"> %</div></div>
-                    <div class="share-row"><span>SYSTEM-FIRMENKASSE (TREASURY):</span><div><input type="number" id="share-treasury" value="0" step="10"> %</div></div>
-                    <div class="counter-text">SYNCHRONISATION: <span id="share-total">0%</span></div>
+                    <span class="share-box-title">Aktienverteilung (Gesamt 100%)</span>
+                    <div class="share-row"><span>Direktor (P1):</span><div><input type="number" id="share-p1" value="0" step="10"> %</div></div>
+                    <div class="share-row"><span>Aktionär B (P2):</span><div><input type="number" id="share-p2" value="0" step="10"> %</div></div>
+                    <div class="share-row"><span>Aktionär C (P3):</span><div><input type="number" id="share-p3" value="0" step="10"> %</div></div>
+                    <div class="share-row"><span>Firmenkasse (Treasury):</span><div><input type="number" id="share-treasury" value="0" step="10"> %</div></div>
+                    <div class="counter-text">Erfasst: <span id="share-total">0%</span></div>
                 </div>
 
                 <div class="btn-group">
-                    <button class="btn btn-pay" id="btn-action-pay">AUSSCHÜTTEN (TRANSACTION ON)</button>
-                    <button class="btn btn-withhold" id="btn-action-withhold">EINBEHALTEN (LOCK CAPITAL)</button>
+                    <button class="btn btn-pay" id="btn-action-pay">Ausschütten</button>
+                    <button class="btn btn-withhold" id="btn-action-withhold">Einbehalten</button>
                 </div>
 
                 <div id="payout-collapse" class="collapsible">
                     <div class="results-box">
-                        <h4>// AUSZAHLUNGS-PROTOKOLL:</h4>
+                        <h4>Auszahlungs-Split:</h4>
                         <ul id="payout-list"></ul>
                     </div>
                 </div>
             </div>
         </main>
+        <footer>1880: China Assistent — Schienennetz-Verwaltung v2.0</footer>
     </div>
 
     <audio id="bg-audio" loop></audio>
@@ -359,38 +314,38 @@
     <script>
         const phaseData = {
             '2': {
-                music: 'lancerevovii.github.io/秦颂 - Ode of the Qin (Chinese Qin Dynasty Anthem).mp3',
+                music: 'https://deinname.github.io/deinrepo/phase2.mp3',
                 rules: [
-                    '⚡ PERMITTIERTE STRÖME: Nur gelbe Schienennetze freigeschaltet.',
-                    '⚡ SCHMALSPUR-MINORS: Kleine Sub-Systeme booten und verlegen Schienen.',
-                    '⚡ DEPOT-STATUS: Typ-2 Lokomotiven stabil im freien Markt.',
-                    '⚡ NETZ-LIMIT: Strikte Obergrenze von max. 2 unverkauften Loks im Depot.'
+                    'Gleisbau: Nur gelbe Schienenstrecken dürfen verbaut werden.',
+                    'Minor Companies: Kleine Vorläufer-Bahnen sind aktiv und verlegen eigene Netze.',
+                    'Depot: Typ-2 Züge sind regulär verfügbar.',
+                    'Limit: Maximal 2 unverkaufte Züge dürfen im Depot liegen.'
                 ]
             },
             '4': {
                 music: 'https://deinname.github.io/deinrepo/phase4.mp3',
                 rules: [
-                    '⚡ AUSBAU-SCHALTUNG: Grüne Upgrades global freigeschaltet.',
-                    '⚡ FOREIGN INVESTORS: Ausländische Investitions-Vektoren rekonfiguriert.',
-                    '⚡ SYSTEM-ROST: Typ-2 Einheiten degenerieren am Ende der nächsten Operationsrunde unbarmherzig!',
-                    '⚡ LIMIT-SHIFT: Handkartenlimit für Zertifikats-Module verschoben.'
+                    'Gleisbau: Grüne Modernisierungs-Schienen sind ab jetzt freigeschaltet.',
+                    'Foreign Investors: Ausländische Investoren steigen in den Markt ein.',
+                    'Veralterung: Typ-2 Züge rosten unwiderruflich am Ende der nächsten Operationsrunde!',
+                    'Zertifikatslimit: Das Handkarten-Limit für Aktienzertifikate ändert sich.'
                 ]
             },
             '6': {
                 music: 'https://deinname.github.io/deinrepo/phase6.mp3',
                 rules: [
-                    '⚡ CORE-GRID-UPGRADE: Braune High-Tier-Verbindungen freigegeben.',
-                    '⚡ REPUBLIK-KRAFT: Mächtige Regierungs-Züge (G-Trains) online.',
-                    '⚡ FLOTTEN-DEGRADIERUNG: Typ-3 Züge terminieren am Ende der nächsten Operationsrunde.',
-                    '⚡ KURS-STURZ: Kapital-Verschluss (Einbehalten) triggert drastischere Marktverluste.'
+                    'Gleisbau: Braune High-Tier-Verbindungen sind für den Bau freigegeben.',
+                    'Staatsbahnen: Große, mächtige Regierungs-Züge (G-Trains) kommen ins Spiel.',
+                    'Veralterung: Typ-3 Züge werden am Ende der nächsten Operationsrunde ausgemustert.',
+                    'Einbehalten: Das Sichern von Gewinnen in der Firmenkasse führt zu schärferen Kursverlusten.'
                 ]
             },
             'E': {
                 music: 'https://deinname.github.io/deinrepo/phaseE.mp3',
                 rules: [
-                    '⚡ MAGLEV MATRIX: Graue Upgrades und High-Tech-Sektoren vollständig geladen.',
-                    '⚡ INSTANT PURGE: Typ-4 Züge rosten per sofort ohne Karenzzeit!',
-                    '⚡ TERMINATION SEQ: Shutdown-Protokoll und finale Vermögens-Bilanzierung aktiv.'
+                    'Gleisbau: Graue Magnetbahn-Gleise (Maglev) sind vollständig verfügbar.',
+                    'Sofort-Rost: Typ-4 Züge werden augenblicklich und ohne Übergangsfrist aus dem Spiel entfernt.',
+                    'Endspiel: Finale Operationsrunden und anschließende Vermögens-Bilanzierung eingeleitet.'
                 ]
             }
         };
@@ -409,8 +364,6 @@
 
             document.getElementById('btn-action-pay').addEventListener('click', () => runPayout(true));
             document.getElementById('btn-action-withhold').addEventListener('click', () => runPayout(false));
-            
-            // Revolutions-Hebel Event
             document.getElementById('communist-toggle').addEventListener('change', toggleRevolution);
 
             changePhase('2');
@@ -428,7 +381,7 @@
             if (audio && phaseData[phaseKey].music) {
                 audio.src = phaseData[phaseKey].music;
                 audio.volume = 0.15; 
-                audio.play().catch(() => console.log("Audio wartet auf Interaktion."));
+                audio.play().catch(() => console.log("Audio wartet auf User-Interaktion."));
             }
         }
 
@@ -443,31 +396,28 @@
             const isCommunist = document.getElementById('communist-toggle').checked;
             rulesOutput.innerHTML = '';
 
-            // Zeige Standard-Phasenregeln
             phaseData[currentPhase].rules.forEach(rule => {
                 const li = document.createElement('li');
                 li.innerHTML = rule;
                 rulesOutput.appendChild(li);
             });
 
-            // Wenn Kommunismus aktiv, injiziere die Dekret-XIV-Überschreibungen
             if (isCommunist) {
                 const overrideRules = [
-                    '🛑 [DEKRET XIV] MARKT-SANKTION: Der Aktienmarkt steht still. Keine Kursbewegungen erlaubt!',
-                    '🛑 [DEKRET XIV] ENTEIGNUNG: Private Gesellschaften (Privates) & Foreign Investors zahlen ab jetzt 0¥ Dividende.',
-                    '🛑 [DEKRET XIV] KADER-KONTROLLE: Direktoren dürfen absolut keine Firmenanteile mehr veräußern.'
+                    '🛑 <strong>[Dekret XIV]</strong> Der Aktienmarkt ist eingefroren. Keine Kursänderungen in SR/OR!',
+                    '🛑 <strong>[Dekret XIV]</strong> Private Companies & Foreign Investors zahlen ab jetzt 0¥ Dividende.',
+                    '🛑 <strong>[Dekret XIV]</strong> Direktoren dürfen keine Aktien der eigenen Gesellschaft verkaufen.'
                 ];
                 overrideRules.forEach(rule => {
                     const li = document.createElement('li');
-                    li.style.borderColor = '#ff0000';
-                    li.style.background = 'rgba(40, 0, 0, 0.5)';
+                    li.style.borderColor = '#c53030';
+                    li.style.background = '#fff5f5';
                     li.innerHTML = rule;
                     rulesOutput.insertBefore(li, rulesOutput.firstChild);
                 });
-                
-                document.getElementById('market-warning-box').innerHTML = `<strong>[SYSTEM XIV ACTIVE] PRIVATKAPITAL COLLAPSE:</strong> Private Companies zahlen bis zum Spielende keinerlei Dividenden mehr!`;
+                document.getElementById('market-warning-box').innerHTML = `<strong>[Kapitel XIV Aktiv]</strong> Die Dividenden der Privaten Firmen sind dauerhaft ausgesetzt!`;
             } else {
-                document.getElementById('market-warning-box').innerHTML = `<strong>[CRITICAL WARNING] P0 & P1 MARKTDRUCK:</strong> Bleiben Datenblöcke unberührt, System-Wert-Kompression um ¥ 5. Bei ¥ 0 erfolgt Zwangs-Injektion beim nächsten Operator!`;
+                document.getElementById('market-warning-box').innerHTML = `<strong>P0 & P1 Marktdruck:</strong> Werden sie nicht gekauft, sinkt der Wert in jeder Runde um ¥ 5. Bei ¥ 0 muss der nächste Spieler sie zwangsweise nehmen!`;
             }
         }
 
@@ -476,8 +426,8 @@
             const box = document.getElementById('setup-collapse');
             if (players === 0) { box.classList.remove('show'); return; }
             let cash = players === 3 ? 600 : players === 4 ? 480 : players === 5 ? 400 : players === 6 ? 340 : 300;
-            document.getElementById('cash-badge').innerText = `CREDIT-INJEKTION: ¥ ${cash} PRO OPERATOR`;
-            document.getElementById('checklist-turn-cards').innerHTML = `Reihenfolge-Vektoren (0 bis ${players - 1}) ausgeben. ID-0 erhält die antike Startspieler-Lokomotive!`;
+            document.getElementById('cash-badge').innerText = `Startkapital: ¥ ${cash} pro Spieler`;
+            document.getElementById('checklist-turn-cards').innerHTML = `Reihenfolge-Karten (0 bis ${players - 1}) ausgeben. Platz 0 startet mit der 2-Minor-Lokomotive!`;
             box.classList.add('show');
         }
 
@@ -489,7 +439,7 @@
             const total = p1 + p2 + p3 + treasury;
             const totalSpan = document.getElementById('share-total');
             totalSpan.innerText = total + '%';
-            totalSpan.style.color = (total === 100) ? 'var(--neon)' : '#ff0033';
+            totalSpan.style.color = (total === 100) ? 'var(--primary)' : '#c53030';
             return total;
         }
 
@@ -501,34 +451,34 @@
 
             list.innerHTML = '';
 
-            if (revenue <= 0) { alert("ERROR: NETZWERK-ERTRAGS-KNOTEN LEER!"); box.classList.remove('show'); return; }
+            if (revenue <= 0) { alert("Bitte einen gültigen Ertragswert eingeben."); box.classList.remove('show'); return; }
 
             if (!isPayout) {
-                list.innerHTML += `<li><strong>LOCKDOWN:</strong> Ertrag komplett gesperrt. +¥ ${revenue} direkt in Firmenkasse transferiert.</li>`;
+                list.innerHTML += `<li><strong>Einbehalten:</strong> Voller Ertrag (+¥ ${revenue}) geht in die Firmenkasse.</li>`;
                 if (isCommunist) {
-                    list.innerHTML += `<li style="color:#ff0000;"><em>MARKTVERSCHIEBUNG BLOCKIERT:</em> Kurs-Modul aufgrund von Dekret XIV eingefroren!</li>`;
+                    list.innerHTML += `<li style="color:#c53030;"><em>Marktwert-Freeze:</em> Keine Kursänderung wegen Dekret XIV.</li>`;
                 } else {
-                    list.innerHTML += `<li><em>MARKTVERSCHIEBUNG:</em> Kurs-Modul sinkt oder mutiert nach links/unten.</li>`;
+                    list.innerHTML += `<li><em>Kursänderung:</em> Aktienkurs sinkt (Verschiebung nach links/unten).</li>`;
                 }
                 box.classList.add('show');
                 return;
             }
 
-            if (countShares() !== 100) { alert("CRITICAL ERROR: AKTIEN-NETZWERK ASYNCHRON! SUMME MUSS EXAKT 100% SEIN."); box.classList.remove('show'); return; }
+            if (countShares() !== 100) { alert("Die Summe der Aktienanteile muss exakt 100% ergeben."); box.classList.remove('show'); return; }
 
-            const shareIds = { 'p1': 'DIREKTOR (P1)', 'p2': 'AKTIONÄR (P2)', 'p3': 'AKTIONÄR (P3)', 'treasury': 'FIRMENKASSE (TREASURY)' };
+            const shareIds = { 'p1': 'Direktor (P1)', 'p2': 'Aktionär B (P2)', 'p3': 'Aktionär C (P3)', 'treasury': 'Firmenkasse (Treasury)' };
             for (const [id, name] of Object.entries(shareIds)) {
                 const percent = parseInt(document.getElementById('share-' + id).value) || 0;
                 if (percent > 0) {
                     const cash = Math.round(revenue * (percent / 100));
-                    list.innerHTML += `<li><strong>${name}:</strong> +¥ ${cash} Credits geschaltet (${percent}% Knotenlast).</li>`;
+                    list.innerHTML += `<li><strong>${name}:</strong> Erhält ¥ ${cash} (${percent}% Anteil).</li>`;
                 }
             }
             
             if (isCommunist) {
-                list.innerHTML += `<li style="color:#ff0000;"><em>MARKTVERSCHIEBUNG BLOCKIERT:</em> Dividenden-Injektion erfolgreich, aber Kursänderungen sind per Dekret XIV ausgesetzt!</li>`;
+                list.innerHTML += `<li style="color:#c53030;"><em>Marktwert-Freeze:</em> Ertrag ausgezahlt, aber Kursänderung ist blockiert!</li>`;
             } else {
-                list.innerHTML += `<li><em>MARKTVERSCHIEBUNG:</em> Dividenden-Injektion erfolgreich. Kurs-Modul steigt um 1 Feld.</li>`;
+                list.innerHTML += `<li><em>Kursänderung:</em> Dividende gezahlt. Aktienkurs steigt (Verschiebung um 1 Feld nach rechts).</li>`;
             }
             box.classList.add('show');
         }
