@@ -5,70 +5,227 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>1880: China – Bahn-Begleiter</title>
     
-    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@3.4.15"></script>
+    
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;700&family=Noto+Serif+SC:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;700&family=ZCOOL+XiaoWei&display=swap" rel="stylesheet">
 
-    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <style>
+        /* Sanfte Farbübergänge für die gesamte Seite */
+        .theme-transition {
+            transition: background-color 1200ms cubic-bezier(0.4, 0, 0.2, 1), 
+                        color 800ms ease, 
+                        border-color 800ms ease,
+                        box-shadow 800ms ease;
+        }
+        /* Custom Fonts je nach Ära */
+        .font-qing { font-family: 'ZCOOL XiaoWei', serif; }
+        .font-modern { font-family: 'Space Grotesk', sans-serif; }
+    </style>
 </head>
-<body x-data="gameCompanion()" :data-theme="phases[activePhase].theme" class="font-modern">
+<body 
+    x-data="gameCompanion()" 
+    class="theme-transition min-h-screen p-4 md:p-8 flex flex-col justify-between"
+    :class="currentTheme.bg + ' ' + currentTheme.text + ' ' + currentTheme.font"
+>
 
-    <header class="main-header">
-        <h1>1880: China Rail Companion</h1>
-        <p class="subtitle">Wähle die aktuelle Phase aus, um das Design und die Regeln anzupassen:</p>
-        
-        <div class="phase-buttons">
-            <button @click="switchPhase('2')" :class="activePhase === '2' ? 'btn-active' : ''">Phase 2</button>
-            <button @click="switchPhase('4')" :class="activePhase === '4' ? 'btn-active' : ''">Phase 4</button>
-            <button @click="switchPhase('6')" :class="activePhase === '6' ? 'btn-active' : ''">Phase 6</button>
-            <button @click="switchPhase('E')" :class="activePhase === 'E' ? 'btn-active' : ''">Phase E</button>
-        </div>
-    </header>
+    <div class="w-full max-w-5xl mx-auto flex-grow">
+        <header class="text-center mb-10 pb-6 border-b transition-colors duration-500" :class="currentTheme.border">
+            <h1 class="text-4xl md:text-5xl font-bold tracking-tight mb-3">1880: China</h1>
+            <p class="text-sm opacity-70 uppercase tracking-widest font-bold">Digitaler Spielbegleiter</p>
+            
+            <div class="mt-8 inline-flex p-1.5 rounded-full border backdrop-blur-md relative" :class="currentTheme.navBg + ' ' + currentTheme.border">
+                <template x-for="(p, key) in phases" :key="key">
+                    <button 
+                        @click="switchPhase(key)"
+                        class="px-5 py-2 rounded-full font-bold text-xs md:text-sm uppercase tracking-wider cursor-pointer z-10 transition-all duration-300 min-w-[90px] md:min-w-[110px]"
+                        :class="activePhase === key ? currentTheme.btnActiveText : 'opacity-50 hover:opacity-100'"
+                        x-text="'Phase ' + key"
+                    ></button>
+                </template>
+                <div 
+                    class="absolute top-1.5 bottom-1.5 left-1.5 rounded-full transition-all duration-500 ease-out shadow-md"
+                    :class="currentTheme.btnSliderBg"
+                    :style="getSliderStyle()"
+                ></div>
+            </div>
+        </header>
 
-    <main class="grid-container">
-        
-        <div class="column">
-            <section class="card shadow">
-                <h2><span>📋</span> Spielvorbereitung</h2>
+        <main class="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
+            
+            <div class="space-y-6">
                 
-                <div class="input-group">
-                    <label for="players">Anzahl der Spieler:</label>
-                    <select id="players" x-model="playerCount">
-                        <option value="0">-- Bitte wählen --</option>
-                        <option value="3">3 Spieler</option>
-                        <option value="4">4 Spieler</option>
-                        <option value="5">5 Spieler</option>
-                        <option value="6">6 Spieler</option>
-                        <option value="7">7 Spieler</option>
-                    </select>
-                </div>
+                <section class="theme-transition p-6 rounded-2xl shadow-xl border backdrop-blur-sm" :class="currentTheme.card + ' ' + currentTheme.border">
+                    <h2 class="text-xl font-bold mb-4 flex items-center gap-3">
+                        <span class="text-2xl">📋</span> Spielvorbereitung
+                    </h2>
+                    
+                    <div class="mb-5">
+                        <label class="block text-xs uppercase tracking-wider font-bold mb-2 opacity-70">Spieleranzahl am Tisch:</label>
+                        <select 
+                            x-model="playerCount" 
+                            class="w-full p-3 rounded-xl border bg-transparent font-medium focus:outline-none focus:ring-2 transition"
+                            :class="currentTheme.border + ' ' + currentTheme.focusRing"
+                        >
+                            <option value="0" class="text-black">-- Bitte wählen --</option>
+                            <option value="3" class="text-black">3 Spieler</option>
+                            <option value="4" class="text-black">4 Spieler</option>
+                            <option value="5" class="text-black">5 Spieler</option>
+                            <option value="6" class="text-black">6 Spieler</option>
+                            <option value="7" class="text-black">7 Spieler</option>
+                        </select>
+                    </div>
 
-                <div x-show="playerCount > 0" class="setup-details">
-                    <div class="highlight-box">
-                        Startkapital pro Spieler: ¥ <span x-text="calculateStartingCash()"></span>
+                    <div x-show="playerCount > 0" x-collapse x-transition:enter.duration.500ms>
+                        <div class="p-4 rounded-xl font-bold text-center text-lg mb-5 border shadow-inner" :class="currentTheme.highlight + ' ' + currentTheme.border">
+                            Startkapital: ¥ <span class="text-2xl tracking-wide" x-text="calculateStartingCash()"></span>
+                        </div>
+                        
+                        <h3 class="text-xs uppercase tracking-wider font-bold mb-3 opacity-60">Logistik-Checkliste:</h3>
+                        <ul class="text-sm space-y-3">
+                            <li class="flex items-start gap-3"><input type="checkbox" class="w-4 h-4 rounded mt-0.5 cursor-pointer"> <span>Verteile das Geld an alle Spieler.</span></li>
+                            <li class="flex items-start gap-3"><input type="checkbox" class="w-4 h-4 rounded mt-0.5 cursor-pointer"> <span>Lege Privatgesellschaften <strong>P0 bis P7</strong> aus.</span></li>
+                            <li class="flex items-start gap-3"><input type="checkbox" class="w-4 h-4 rounded mt-0.5 cursor-pointer"> <span>Aktienstapel bauen: Unten fünf 10%-Karten, Gründungskarte, drei 10%-Karten, oben 3 Direktorenzertifikate.</span></li>
+                            <li class="flex items-start gap-3"><input type="checkbox" class="w-4 h-4 rounded mt-0.5 cursor-pointer"> <span>Mische Zugreihenfolgekarten <strong>0 bis <span x-text="playerCount - 1"></span></strong>. Karte 0 kriegt die hölzerne Lok.</span></li>
+                        </ul>
+                    </div>
+                </section>
+
+                <section class="theme-transition p-6 rounded-2xl shadow-xl border backdrop-blur-sm" :class="currentTheme.card + ' ' + currentTheme.border">
+                    <h2 class="text-xl font-bold mb-4 flex items-center gap-3">
+                        <span class="text-2xl">🚂</span> Epochen-Auswirkungen
+                    </h2>
+                    
+                    <div class="relative min-h-[120px]">
+                        <ul class="text-sm space-y-2.5 list-none pl-1 transition-opacity duration-300">
+                            <template x-for="(rule, index) in phases[activePhase].rules" :key="index">
+                                <li class="flex items-center gap-2">
+                                    <span class="w-1.5 h-1.5 rounded-full" :class="currentTheme.bullet"></span>
+                                    <span x-text="rule"></span>
+                                </li>
+                            </template>
+                        </ul>
                     </div>
                     
-                    <ul class="setup-checklist">
-                        <li><input type="checkbox"> <span>Verteile das Startkapital an die Spieler.</span></li>
-                        <li><input type="checkbox"> <span>Lege die Privatgesellschaften <strong>P0 bis P7</strong> bereit.</span></li>
-                        <li><input type="checkbox"> <span>Sortiere Aktien: Unten fünf 10%-Aktien, Gründungskarte, drei 10%-Aktien, oben 3 Direktorenzertifikate.</span></li>
-                        <li><input type="checkbox"> <span>Nimm die Zugreihenfolgekarten <strong>0 bis <span x-text="playerCount - 1"></span></strong>.</span></li>
-                        <li><input type="checkbox"> <span class="subtext">Wer Karte 0 zieht, erhält die hölzerne Startspieler-Lok.</span></li>
-                    </ul>
-                </div>
-            </section>
+                    <div class="mt-6 p-4 rounded-xl text-xs border leading-relaxed shadow-sm opacity-80" :class="currentTheme.highlight + ' ' + currentTheme.border">
+                        <strong>P0 & P1 Sonderregel:</strong> Finden sie keinen Käufer, sinkt der Preis um ¥ 5. Wer sie für ¥ 0 angeboten bekommt, MUSS sie nehmen.
+                    </div>
+                </section>
+            </div>
 
-            <section class="card shadow">
-                <h2><span>🚂</span> Phasen-Effekte (Phase <span x-text="activePhase"></span>)</h2>
-                <ul class="rules-list">
-                    <template x-for="rule in phases[activePhase].rules">
-                        <li x-text="rule"></li>
-                    </template>
-                </ul>
-                <div class="info-note">
-                    <strong>P0 & P1 Sonderregel:</strong> Finden sie keinen Käufer, sinkt der Preis um ¥ 5. Wer sie für ¥ 0 angeboten bekommt, MUSS sie nehmen.
-                </div>
-            </section>
-        </div>
+            <div class="space-y-6">
+                <section class="theme-transition p-6 rounded-2xl shadow-xl border backdrop-blur-sm" :class="currentTheme.card + ' ' + currentTheme.border">
+                    <h2 class="text-xl font-bold mb-5 flex items-center gap-3">
+                        <span class="text-2xl">💰</span> Dividenden-Ledger
+                    </h2>
+                    
+                    <div class="mb-5">
+                        <label class="block text-xs uppercase tracking-wider font-bold mb-2 opacity-70">Gesamter Routenertrag:</label>
+                        <input 
+                            type="number" 
+                            x-model.number="revenue" 
+                            placeholder="z.B. 350" 
+                            step="10"
+                            class="w-full p-3 rounded-xl border bg-transparent font-medium text-lg tracking-wide focus:outline-none focus:ring-2 transition"
+                            :class="currentTheme.border + ' ' + currentTheme.focusRing"
+                        >
+                    </div>
+
+                    <div class="space-y-3 mb-6 p-4 rounded-xl border bg-opacity-20 bg-black/5" :class="currentTheme.border">
+                        <h3 class="text-xs uppercase tracking-wider font-bold mb-3 border-b pb-2 opacity-60">Aktienbesitz (Summe muss 100% sein)</h3>
+                        
+                        <div class="flex justify-between items-center gap-4 text-sm">
+                            <label class="font-medium">Spieler 1:</label>
+                            <div class="flex items-center gap-1"><input type="number" x-model.number="shares.p1" step="10" class="w-16 p-2 border rounded-lg bg-transparent text-center font-bold" :class="currentTheme.border"><span class="opacity-50">%</span></div>
+                        </div>
+                        <div class="flex justify-between items-center gap-4 text-sm">
+                            <label class="font-medium">Spieler 2:</label>
+                            <div class="flex items-center gap-1"><input type="number" x-model.number="shares.p2" step="10" class="w-16 p-2 border rounded-lg bg-transparent text-center font-bold" :class="currentTheme.border"><span class="opacity-50">%</span></div>
+                        </div>
+                        <div class="flex justify-between items-center gap-4 text-sm">
+                            <label class="font-medium">Spieler 3:</label>
+                            <div class="flex items-center gap-1"><input type="number" x-model.number="shares.p3" step="10" class="w-16 p-2 border rounded-lg bg-transparent text-center font-bold" :class="currentTheme.border"><span class="opacity-50">%</span></div>
+                        </div>
+                        <div class="flex justify-between items-center gap-4 text-sm">
+                            <label class="font-medium">Firmenkasse / Unverkauft:</label>
+                            <div class="flex items-center gap-1"><input type="number" x-model.number="shares.treasury" step="10" class="w-16 p-2 border rounded-lg bg-transparent text-center font-bold" :class="currentTheme.border"><span class="opacity-50">%</span></div>
+                        </div>
+
+                        <div class="text-right text-xs font-bold pt-2 border-t mt-3" :class="currentTheme.border">
+                            Eingetragen: <span class="px-2 py-0.5 rounded text-sm" :class="totalShares === 100 ? 'bg-emerald-500/20 text-emerald-600 font-extrabold' : 'bg-rose-500/20 text-rose-500'" x-text="totalShares + '%'"></span>
+                        </div>
+                    </div>
+
+                    <div class="flex gap-3">
+                        <button @click="payout(true)" class="flex-1 bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-3.5 px-4 rounded-xl text-sm tracking-wider uppercase cursor-pointer shadow-lg active:scale-95 transition-all">Ausschütten</button>
+                        <button @click="payout(false)" class="flex-1 bg-amber-600 hover:bg-amber-500 text-white font-bold py-3.5 px-4 rounded-xl text-sm tracking-wider uppercase cursor-pointer shadow-lg active:scale-95 transition-all">Einbehalten</button>
+                    </div>
+
+                    <div x-show="showResults" x-collapse x-transition:enter.duration.500ms class="mt-6 p-4 rounded-xl border text-sm" :class="currentTheme.highlight + ' ' + currentTheme.border">
+                        <h4 class="font-bold mb-3 uppercase tracking-wider text-xs opacity-70">Auszahlungs-Protokoll:</h4>
+                        <ul class="space-y-2">
+                            <template x-for="log in payoutLog">
+                                <li class="border-b border-black/5 pb-1.5 last:border-0" x-html="log"></li>
+                            </template>
+                        </ul>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <footer class="text-center text-xs opacity-40 mt-12 pt-4 border-t" :class="currentTheme.border">
+        1880: China Companion App • Läuft komplett lokal im Browser
+    </footer>
+
+    <audio id="bg-audio" loop></audio>
+
+    <script>
+        function gameCompanion() {
+            return {
+                activePhase: '2',
+                playerCount: 0,
+                revenue: null,
+                showResults: false,
+                payoutLog: [],
+                shares: { p1: 0, p2: 0, p3: 0, treasury: 0 },
+
+                // Wunderschöne, ausformulierte UI-Themepakete für die Ären
+                themes: {
+                    qing: {
+                        bg: 'bg-[#f0e6cc]', 
+                        text: 'text-[#3a2f1d]',
+                        card: 'bg-[#faf6eb]',
+                        border: 'border-[#c2b295]',
+                        highlight: 'bg-[#e6dbbf]',
+                        font: 'font-qing',
+                        bullet: 'bg-[#8b7355]',
+                        focusRing: 'focus:ring-[#8b7355]',
+                        navBg: 'bg-[#eae0c2]',
+                        btnSliderBg: 'bg-[#8b7355]',
+                        btnActiveText: 'text-white'
+                    },
+                    industrial: {
+                        bg: 'bg-[#e2e8f0]', 
+                        text: 'text-[#1e293b]',
+                        card: 'bg-white',
+                        border: 'border-slate-300',
+                        highlight: 'bg-slate-100',
+                        font: 'font-modern',
+                        bullet: 'bg-emerald-600',
+                        focusRing: 'focus:ring-emerald-600',
+                        navBg: 'bg-slate-200/80',
+                        btnSliderBg: 'bg-emerald-600',
+                        btnActiveText: 'text-white'
+                    },
+                    modern: {
+                        bg: 'bg-[#0f172a]', 
+                        text: 'text-[#f8fafc]',
+                        card: 'bg-[#1e293b]',
+                        border: 'border-slate-700',
+                        highlight: 'bg-slate-800/80',
+                        font: 'font-modern',
+                        bullet: 'bg-blue-
